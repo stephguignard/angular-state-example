@@ -1,1 +1,7 @@
-<p>user-detail-page works!</p>
+<form [formGroup]="userForm" (ngSubmit)="saveChanges()">
+  <input formControlName="name" placeholder="Nom" />
+  <input formControlName="firstName" placeholder="Prénom" />
+  <input formControlName="email" placeholder="Email" />
+  <p-button type="submit">Enregistrer</p-button>
+  <p-button type="button" (click)="cancel()">Annuler</p-button>
+</form>

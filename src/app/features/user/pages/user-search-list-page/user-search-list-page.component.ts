@@ -1,8 +1,17 @@
 import { Component } from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {UserSearchStateService} from '../../services/user-search-state.service';
+import {UserSearchComponent} from '../../components/user-search/user-search.component';
+import {UserTableComponent} from '../../components/user-table/user-table.component';
 
 @Component({
   selector: 'app-user-search-list-page',
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    UserSearchComponent,
+    UserTableComponent
+  ],
+  providers: [UserSearchStateService],
   templateUrl: './user-search-list-page.component.html',
   styleUrl: './user-search-list-page.component.scss'
 })

@@ -1,38 +1,42 @@
 import {Component, OnInit} from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {User} from '../../models/user';
-import {UserStateService} from '../../services/user-state.service';
+import {UserSearchStateService} from '../../services/user-search-state.service';
+import {Router} from '@angular/router';
+import {NgForOf} from '@angular/common';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-user-table',
   imports: [
-    TableModule
+    TableModule,
+    Button
   ],
-  providers: [UserStateService],
+  providers: [UserSearchStateService],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.scss'
 })
-export class UserTableComponent implements OnInit {
-  users!: User[];
+export class UserTableComponent  {
+  constructor(private userSearchStateService: UserSearchStateService, private router: Router) {}
 
-  constructor(private userStateService:UserStateService) {
+  get users() {
+    return this.userSearchStateService.getUsers();
   }
 
-  ngOnInit() {
-    this.users=[
-      {
-        id: 123,
-        name:'tata',
-        firstName:'stephane',
-        email:'sguik@gmail.com'
-      },
-      {
-        id: 1234,
-        name:'Guignard',
-        firstName:'patrick',
-        email:'pauik@gmail.com'
-      }
-      ]
+  get page() {
+    return this.userSearchStateService.getPage();
+  }
+
+  nextPage() {
+    this.userSearchStateService.setPage(this.page + 1);
+  }
+
+  prevPage() {
+    if (this.page > 1) this.userSearchStateService.setPage(this.page - 1);
+  }
+
+  editUser(user: User) {
+    this.router.navigate(['/user', user.id]);
   }
 
 }
