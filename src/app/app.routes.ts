@@ -6,11 +6,11 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./features/home/pages/home-page/home-page.component').then((c) => c.HomePageComponent),
+        loadChildren: () => import('./features/home/home.routes').then(r => r.HOME_ROUTE),
       },
       {
         path: 'user',
-        loadComponent: () => import('./features/user/pages/user-page/user-page.component').then((c) => c.UserPageComponent),
+        loadChildren: () => import('./features/user/user.routes').then((r) => r.USER_ROUTE),
       },
 
       { path: '**', redirectTo: '/home' },

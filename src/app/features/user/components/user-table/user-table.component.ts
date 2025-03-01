@@ -21,11 +21,13 @@ export class UserTableComponent implements OnInit {
   ngOnInit() {
     this.users=[
       {
+        id: 123,
         name:'tata',
         firstName:'stephane',
         email:'sguik@gmail.com'
       },
       {
+        id: 1234,
         name:'Guignard',
         firstName:'patrick',
         email:'pauik@gmail.com'
