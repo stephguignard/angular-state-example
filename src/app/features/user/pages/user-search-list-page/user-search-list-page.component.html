@@ -4,6 +4,6 @@
 </p-card>
 
 <p-card header="Liste des résultats" styleClass="mt-6">
-  <app-user-table></app-user-table>
+  <app-user-table (userEdited)="onUserEdit($event)"></app-user-table>
 </p-card>
 

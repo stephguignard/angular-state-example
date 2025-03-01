@@ -1,41 +1,29 @@
-import {Component, computed, effect, OnInit, Signal} from '@angular/core';
+import {Component, computed, effect, EventEmitter, OnInit, Output, Signal} from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {User} from '../../models/user';
 import {UserSearchStateService} from '../../services/user-search-state.service';
-import {Router} from '@angular/router';
 import {Button} from 'primeng/button';
-import {JsonPipe, NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-user-table',
   imports: [
     TableModule,
     Button,
-    JsonPipe,
   ],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.scss'
 })
 export class UserTableComponent implements OnInit {
-  users! :Signal<User[]> ;
-  page! :Signal<number> ;
+  users!: Signal<User[]>;
+  page!: Signal<number>;
 
+  @Output() userEdited = new EventEmitter<number>(); // ✅ Événement pour notifier le parent
 
-
-  constructor(private userSearchStateService: UserSearchStateService,private router: Router) {
-    console.log("📌 Initialisation de UserTableComponent...");
-
-    // effect(() => {
-    //   console.log("📌 Liste des utilisateurs mise à jour :", this.users());
-    // });
-  }
+  constructor(private userSearchStateService: UserSearchStateService) {}
 
   ngOnInit() {
     this.users = this.userSearchStateService.getUsersSignal();
     this.page = this.userSearchStateService.getPageSignal();
-
-    // ✅ Vérification que `users` change bien
-
   }
 
   nextPage() {
@@ -49,7 +37,7 @@ export class UserTableComponent implements OnInit {
   }
 
   editUser(userId: number) {
-    this.router.navigate(['/user', userId]);
+    this.userEdited.emit(userId);
   }
 
 }

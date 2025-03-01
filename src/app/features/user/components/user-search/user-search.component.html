@@ -1,9 +1,8 @@
-<div class="search-bar">
-  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-    <input formControlName="name" placeholder="Nom..." />
-    <input formControlName="firstName" placeholder="Prénom..." />
-    <input formControlName="email" placeholder="Email..." />
-    <p-button type="submit" (onClick)="onSearch()">Rechercher</p-button>
+<div class="search-bar pr-4">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex justify-between">
+    <input pInputText formControlName="name" placeholder="Nom..."  class="flex-1 mr-3" />
+    <input pInputText formControlName="firstName" placeholder="Prénom..." class="flex-1 mr-3"/>
+    <input pInputText formControlName="email" placeholder="Email..." class="flex-1 mr-3"/>
+    <p-button type="submit" (onClick)="onSearch()" class="flex-1">Rechercher</p-button>
   </form>
 </div>
-{{this.query() | json}}

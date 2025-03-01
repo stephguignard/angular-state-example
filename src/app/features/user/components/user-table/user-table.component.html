@@ -22,26 +22,9 @@
   </ng-template>
 </p-table>
 
-<!--<table>-->
-<!--  <tr>-->
-<!--    <th>Nom</th>-->
-<!--    <th>Prénom</th>-->
-<!--    <th>Email</th>-->
-<!--    <th>Action</th>-->
-<!--  </tr>-->
-<!--  <tr *ngFor="let user of users()">-->
-<!--    <td>{{ user.id }}</td>-->
-<!--    <td>{{ user.name }}</td>-->
-<!--    <td>{{ user.firstName }}</td>-->
-<!--    <td>{{ user.email }}</td>-->
-<!--    <td><p-button (click)="editUser(user.id)">Modifier</p-button></td>-->
-<!--  </tr>-->
-<!--</table>-->
 
-{{users() | json}}
-
-<div class="pagination">
-  <p-button (click)="prevPage()">Précédent</p-button>
-  <span>Page {{ page() }}</span>
+<div class="pagination mt-6">
+  <p-button (click)="prevPage()" class="mr-3">Précédent</p-button>
+  <span class="mr-3">Page {{ page() }}</span>
   <p-button (click)="nextPage()">Suivant</p-button>
 </div>
