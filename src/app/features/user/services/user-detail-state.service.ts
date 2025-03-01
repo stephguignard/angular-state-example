@@ -1,4 +1,4 @@
-import {Injectable, signal} from '@angular/core';
+import {Injectable, Signal, signal} from '@angular/core';
 import {UserRepositoryService} from './user-repository.service';
 import {User} from '../models/user';
 
@@ -9,8 +9,8 @@ export class UserDetailStateService {
 
   constructor(private userRepositoryService: UserRepositoryService) {}
 
-  getSelectedUser(): User | null {
-    return this._selectedUser();
+  getSelectedUserSignal(): Signal<User | null> {
+    return this._selectedUser.asReadonly();
   }
 
   loadUser(id: number) {
@@ -22,5 +22,9 @@ export class UserDetailStateService {
   updateUser(updatedUser: User) {
     this._selectedUser.set(updatedUser);
     this.userRepositoryService.updateUser(updatedUser);
+  }
+
+  clearSelection() {
+    this._selectedUser.set(null);
   }
 }

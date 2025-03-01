@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, effect, OnInit, Signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserDetailStateService} from '../../services/user-detail-state.service';
 import {Button} from 'primeng/button';
+import {User} from '../../models/user';
 
 @Component({
   selector: 'app-user-detail-page',
@@ -14,37 +15,37 @@ import {Button} from 'primeng/button';
   templateUrl: './user-detail-page.component.html',
   styleUrl: './user-detail-page.component.scss'
 })
-export class UserDetailPageComponent {
+export class UserDetailPageComponent implements OnInit {
   userForm!: FormGroup;
-  userId!: number;
+  user! : Signal<User|null>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private userState: UserDetailStateService
-  ) {}
+    private userDetailStateService: UserDetailStateService
+  ) {
+    this.user = this.userDetailStateService.getSelectedUserSignal()
+
+    effect(() => {
+      if(this.user()){
+        this.userForm = this.fb.group({
+          name: [this.user()!.name, Validators.required],
+          firstName: [this.user()!.firstName, Validators.required],
+          email: [this.user()!.email, [Validators.required, Validators.email]]
+        });
+      }
+    });
+  }
 
   ngOnInit() {
-    this.userId = Number(this.route.snapshot.paramMap.get('id'));
-    this.userState.loadUser(this.userId);
-
-    const user = this.userState.getSelectedUser();
-    if (!user) {
-      this.router.navigate(['/user']);
-      return;
-    }
-
-    this.userForm = this.fb.group({
-      name: [user.name, Validators.required],
-      firstName: [user.firstName, Validators.required],
-      email: [user.email, [Validators.required, Validators.email]],
-    });
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.userDetailStateService.loadUser(id);
   }
 
   saveChanges() {
     if (this.userForm.valid) {
-      this.userState.updateUser({ id: this.userId, ...this.userForm.value });
+      this.userDetailStateService.updateUser({ ...this.user(), ...this.userForm.value });
       this.router.navigate(['/user']);
     }
   }
