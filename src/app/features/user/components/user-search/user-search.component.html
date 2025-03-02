@@ -3,6 +3,6 @@
     <input pInputText formControlName="name" placeholder="Nom..."  class="flex-1" />
     <input pInputText formControlName="firstName" placeholder="Prénom..." class="flex-1"/>
     <input pInputText formControlName="email" placeholder="Email..." class="flex-1"/>
-    <p-button label="Rechercher" type="submit" (onClick)="onSearch()" icon="pi pi-search"></p-button>
+    <p-button label="Rechercher" type="submit" icon="pi pi-search" [disabled]="loading()"></p-button>
   </form>
 </div>

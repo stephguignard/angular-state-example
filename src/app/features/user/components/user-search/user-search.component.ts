@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Signal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UserSearchStateService} from '../../services/user-search-state.service';
 import {Button} from 'primeng/button';
@@ -17,6 +17,7 @@ import {InputText} from 'primeng/inputtext';
 })
 export class UserSearchComponent implements OnInit {
   searchForm: FormGroup;
+  loading!: Signal<boolean>;
 
   constructor(private fb: FormBuilder, private userSearchStateService: UserSearchStateService) {
     this.searchForm = this.fb.group({
@@ -24,6 +25,8 @@ export class UserSearchComponent implements OnInit {
       firstName: [''],
       email: ['']
     });
+
+    this.loading = this.userSearchStateService.getLoadingSignal();
   }
 
   ngOnInit() {

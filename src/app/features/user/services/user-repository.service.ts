@@ -63,6 +63,26 @@ export class UserRepositoryService {
     return of(this.users);
   }
 
+  getUsersPaginated(page: number, itemsPerPage: number, query: { name: string; firstName: string; email: string }): Observable<User[]> {
+    console.log(`📡 Simulation backend : Chargement des utilisateurs - Page ${page}`);
+
+    return new Observable(observer => {
+      setTimeout(() => {
+        let filteredUsers = this.users.filter(user =>
+          (query.name ? user.name.toLowerCase().includes(query.name.toLowerCase()) : true) &&
+          (query.firstName ? user.firstName.toLowerCase().includes(query.firstName.toLowerCase()) : true) &&
+          (query.email ? user.email.toLowerCase().includes(query.email.toLowerCase()) : true)
+        );
+
+        const startIndex = (page - 1) * itemsPerPage;
+        const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+
+        observer.next(paginatedUsers);
+        observer.complete();
+      }, 1000); // Simule un délai de 1 seconde pour l'appel backend
+    });
+  }
+
   getUserById(id: number): Observable<User | undefined> {
     return of(this.users.find(user => user.id === id));
   }
