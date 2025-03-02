@@ -72,4 +72,8 @@ export class UserRepositoryService {
       user.id === updatedUser.id ? updatedUser : user
     );
   }
+
+  removeUser(removeUser: User) {
+    this.users = this.users.filter(user => user.id !== removeUser.id);
+  }
 }

@@ -1,4 +1,4 @@
-import {Component, computed, effect, EventEmitter, OnInit, Output, Signal} from '@angular/core';
+import {Component, OnInit, output, Signal} from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {User} from '../../models/user';
 import {UserSearchStateService} from '../../services/user-search-state.service';
@@ -14,10 +14,10 @@ import {Button} from 'primeng/button';
   styleUrl: './user-table.component.scss'
 })
 export class UserTableComponent implements OnInit {
+  userEdited = output<number>()
+
   users!: Signal<User[]>;
   page!: Signal<number>;
-
-  @Output() userEdited = new EventEmitter<number>(); // ✅ Événement pour notifier le parent
 
   constructor(private userSearchStateService: UserSearchStateService) {}
 

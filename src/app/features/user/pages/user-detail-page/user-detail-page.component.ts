@@ -4,12 +4,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserDetailStateService} from '../../services/user-detail-state.service';
 import {Button} from 'primeng/button';
 import {User} from '../../models/user';
+import {Card} from 'primeng/card';
+import {InputText} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-user-detail-page',
   imports: [
     ReactiveFormsModule,
-    Button
+    Button,
+    Card,
+    InputText
   ],
   providers: [UserDetailStateService],
   templateUrl: './user-detail-page.component.html',
@@ -30,6 +34,7 @@ export class UserDetailPageComponent implements OnInit {
     effect(() => {
       if(this.user()){
         this.userForm = this.fb.group({
+          id: [this.user()!.id],
           name: [this.user()!.name, Validators.required],
           firstName: [this.user()!.firstName, Validators.required],
           email: [this.user()!.email, [Validators.required, Validators.email]]
@@ -50,7 +55,14 @@ export class UserDetailPageComponent implements OnInit {
     }
   }
 
+  remove() {
+    this.userDetailStateService.removeUser(this.user()!);
+    this.router.navigate(['/user']);
+  }
+
   cancel() {
     this.router.navigate(['/user']);
   }
+
+
 }

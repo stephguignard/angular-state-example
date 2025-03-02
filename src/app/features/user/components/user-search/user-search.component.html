@@ -1,8 +1,8 @@
 <div class="search-bar pr-4">
-  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex justify-between">
-    <input pInputText formControlName="name" placeholder="Nom..."  class="flex-1 mr-3" />
-    <input pInputText formControlName="firstName" placeholder="Prénom..." class="flex-1 mr-3"/>
-    <input pInputText formControlName="email" placeholder="Email..." class="flex-1 mr-3"/>
-    <p-button type="submit" (onClick)="onSearch()" class="flex-1">Rechercher</p-button>
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex justify-between gap-5">
+    <input pInputText formControlName="name" placeholder="Nom..."  class="flex-1" />
+    <input pInputText formControlName="firstName" placeholder="Prénom..." class="flex-1"/>
+    <input pInputText formControlName="email" placeholder="Email..." class="flex-1"/>
+    <p-button label="Rechercher" type="submit" (onClick)="onSearch()" icon="pi pi-search"></p-button>
   </form>
 </div>

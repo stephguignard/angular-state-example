@@ -24,6 +24,11 @@ export class UserDetailStateService {
     this.userRepositoryService.updateUser(updatedUser);
   }
 
+  removeUser(updatedUser: User) {
+    this._selectedUser.set(null);
+    this.userRepositoryService.removeUser(updatedUser);
+  }
+
   clearSelection() {
     this._selectedUser.set(null);
   }

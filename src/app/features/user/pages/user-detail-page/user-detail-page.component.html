@@ -1,7 +1,21 @@
+<h1 class="text-4xl py-5">Détail d'un utilisateur</h1>
+
 <form [formGroup]="userForm" (ngSubmit)="saveChanges()">
-  <input formControlName="name" placeholder="Nom" />
-  <input formControlName="firstName" placeholder="Prénom" />
-  <input formControlName="email" placeholder="Email" />
-  <p-button type="submit">Enregistrer</p-button>
-  <p-button type="button" (click)="cancel()">Annuler</p-button>
+  <p-card header="Utilisateur" styleClass="mb-3">
+    <div class="flex flex-col gap-2">
+      <span>{{this.user()?.id}}</span>
+      <input pInputText formControlName="name" placeholder="Nom" />
+      <input pInputText formControlName="firstName" placeholder="Prénom" />
+      <input pInputText formControlName="email" placeholder="Email" />
+    </div>
+
+  </p-card>
+
+  <p-card >
+    <div class="justify-end flex gap-3">
+      <p-button label="Supprimer" type="button" severity="secondary" (click)="remove()" icon="pi pi-trash"></p-button>
+      <p-button label="Annuler" type="button" severity="secondary" (click)="cancel()" icon="pi pi-arrow-left"></p-button>
+      <p-button label="Enregistrer" type="submit" icon="pi pi-save"></p-button>
+    </div>
+  </p-card>
 </form>
