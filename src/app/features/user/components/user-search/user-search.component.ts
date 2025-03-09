@@ -26,11 +26,11 @@ export class UserSearchComponent implements OnInit {
       email: ['']
     });
 
-    this.loading = this.userSearchStateService.getLoadingSignal();
+    this.loading = this.userSearchStateService.loading;
   }
 
   ngOnInit() {
-    this.searchForm.patchValue(this.userSearchStateService.getQuerySignal()(), { emitEvent: false });
+    this.searchForm.patchValue(this.userSearchStateService.query(), { emitEvent: false });
 
     // this.searchForm.valueChanges.subscribe(query => {
     //   this.userSearchStateService.setQuery(query);

@@ -1,32 +1,64 @@
-<div>
-  <h2>Todo List</h2>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+  <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">📌 Todo List</h2>
 
   <!-- Champ de recherche -->
-  <input (input)="updateQuery($event)" placeholder="Rechercher..." />
+  <div class="flex items-center space-x-2 mb-4">
+    <i class="pi pi-search text-gray-500"></i>
+    <input
+      pInputText
+      type="text"
+      (input)="updateQuery($event)"
+      placeholder="Rechercher..."
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+    />
+  </div>
 
   <!-- Ajout d'une nouvelle tâche -->
-  <div>
-    <input [(ngModel)]="newTodo" placeholder="Ajouter une tâche..." />
-    <button (click)="addTodo()">Ajouter</button>
+  <div class="flex space-x-2 mb-6">
+    <input
+      pInputText
+      [(ngModel)]="newTodo"
+      placeholder="Ajouter une tâche..."
+      class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+    />
+    <p-button label="Ajouter" icon="pi pi-plus" (click)="addTodo()" class="p-button-sm p-button-primary"></p-button>
   </div>
 
   <!-- Affichage des erreurs -->
-  <div *ngIf="todoStore.hasError()" class="error">
-    Une erreur est survenue. Veuillez réessayer.
+  <div *ngIf="todoStore.hasError()" class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded-md">
+    <i class="pi pi-exclamation-circle"></i> Une erreur est survenue. Veuillez réessayer.
   </div>
 
   <!-- Indicateur de chargement -->
-  <div *ngIf="todoStore.isLoading()">Chargement des tâches...</div>
+  <p-progressBar *ngIf="todoStore.isLoading()" mode="indeterminate" class="mb-4"></p-progressBar>
 
   <!-- Liste des tâches -->
-  <ul>
-    <li *ngFor="let todo of todoStore.sortedTodos()">
-      <input type="checkbox" [checked]="todo.completed" (change)="toggleTodo(todo.id)" />
-      <span [ngClass]="{ 'completed': todo.completed }">{{ todo.text }}</span>
-      <button (click)="removeTodo(todo.id)">❌</button>
-    </li>
-  </ul>
+  <div class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <p *ngIf="todoStore.todosCount() === 0" class="text-gray-500 text-center">Aucune tâche enregistrée.</p>
+
+    <ul class="divide-y divide-gray-300">
+      <li *ngFor="let todo of todoStore.sortedTodos()" class="flex items-center justify-between py-3">
+        <div class="flex items-center space-x-3">
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="todo.completed"
+            (onChange)="toggleTodo(todo.id)">
+          </p-checkbox>
+          <span [ngClass]="{'line-through text-gray-500': todo.completed}" class="text-gray-800">
+            {{ todo.text }}
+          </span>
+        </div>
+        <p-button
+          icon="pi pi-trash"
+          class="p-button-sm p-button-text p-button-danger"
+          (click)="removeTodo(todo.id)">
+        </p-button>
+      </li>
+    </ul>
+  </div>
 
   <!-- Affichage du nombre total de tâches -->
-  <p>🌟 {{ todoStore.todosCount() }} tâches enregistrées</p>
+  <p class="text-gray-600 text-sm mt-4 text-center">
+    🌟 {{ todoStore.todosCount() }} tâche(s) enregistrée(s).
+  </p>
 </div>

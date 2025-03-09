@@ -38,16 +38,16 @@ export class UserSearchListPageComponent  {
   }
 
   private initData() {
-    const initialQuery = this.userSearchStateService.getQuerySignal()();
-    const initialPage = this.userSearchStateService.getPageSignal()();
+    const initialQuery = this.userSearchStateService.query;
+    const initialPage = this.userSearchStateService.page;
     console.log('📌 Load initial data...');
-    this.userSearchStateService.setFilters(initialQuery, initialPage);
+    this.userSearchStateService.setFilters(initialQuery(), initialPage());
   }
 
   private syncStateToUrl() {
     effect(() => {
-      const query = this.userSearchStateService.getQuerySignal()();
-      const page = this.userSearchStateService.getPageSignal()();
+      const query = this.userSearchStateService.query();
+      const page = this.userSearchStateService.page();
 
       this.router.navigate([], {
         queryParams: {...query, page},
@@ -69,7 +69,7 @@ export class UserSearchListPageComponent  {
       };
       const page = Number(params['page']) || 1;
 
-      if (JSON.stringify(query) !== JSON.stringify(untracked(this.userSearchStateService.getQuerySignal())) || page !== untracked(this.userSearchStateService.getPageSignal())) {
+      if (JSON.stringify(query) !== JSON.stringify(untracked(this.userSearchStateService.query)) || page !== untracked(this.userSearchStateService.page)) {
         console.log("📡 Update state from URL");
         this.userSearchStateService.setFilters(query, page);
       }

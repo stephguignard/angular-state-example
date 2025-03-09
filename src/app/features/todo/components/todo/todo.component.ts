@@ -3,6 +3,10 @@ import {TodoStore} from '../../store/todo.store';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {TodoService} from '../../services/todo.service';
+import {InputText} from 'primeng/inputtext';
+import {Button} from 'primeng/button';
+import {ProgressBar} from 'primeng/progressbar';
+import {Checkbox} from 'primeng/checkbox';
 
 @Component({
   selector: 'app-todo',
@@ -10,7 +14,11 @@ import {TodoService} from '../../services/todo.service';
     FormsModule,
     NgClass,
     NgIf,
-    NgForOf
+    NgForOf,
+    InputText,
+    Button,
+    ProgressBar,
+    Checkbox
   ],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
