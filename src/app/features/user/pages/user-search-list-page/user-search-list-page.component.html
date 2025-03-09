@@ -1,9 +1,17 @@
-<h1 class="text-4xl py-5">Recherche des utilisateurs</h1>
-<p-card header="Critères de recherche">
-  <app-user-search></app-user-search>
-</p-card>
+<div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+  <h1 class="text-4xl font-bold text-center text-gray-800 py-5">🔍 Recherche des utilisateurs</h1>
 
-<p-card header="Liste de résultats" styleClass="mt-6">
-  <app-user-table (userEdited)="onUserEdit($event)"></app-user-table>
-</p-card>
+  <!-- Critères de recherche -->
+  <p-card header="Critères de recherche" class="mb-6">
+    <div class="p-4">
+      <app-user-search></app-user-search>
+    </div>
+  </p-card>
 
+  <!-- Liste des résultats -->
+  <p-card header="Liste de résultats" styleClass="mt-6">
+    <div class="p-4">
+      <app-user-table (userEdited)="onUserEdit($event)"></app-user-table>
+    </div>
+  </p-card>
+</div>

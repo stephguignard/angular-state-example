@@ -25,9 +25,9 @@ export class UserTableComponent implements OnInit {
   constructor(private userSearchStateService: UserSearchStateService) {}
 
   ngOnInit() {
-    this.users = this.userSearchStateService.getUsersSignal();
-    this.page = this.userSearchStateService.getPageSignal();
-    this.loading = this.userSearchStateService.getLoadingSignal();
+    this.users = this.userSearchStateService.users;
+    this.page = this.userSearchStateService.page;
+    this.loading = this.userSearchStateService.loading;
   }
 
   nextPage() {
@@ -45,12 +45,6 @@ export class UserTableComponent implements OnInit {
   }
 
   onRowSelect(tableRowSelectEvent: TableRowSelectEvent) {
-    // const affiliateList = tableRowSelectEvent.data;
-    //
-    // const index = this.items().findIndex((item) => item.id === affiliateList.id);
-    // this.affiliateStateService.setIndexSelected(index);
-    //
-    // this.affiliateEvent.emit({ affiliateList, index });
     console.log(tableRowSelectEvent);
   }
 

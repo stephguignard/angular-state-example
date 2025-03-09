@@ -1,19 +1,37 @@
-<div class="flex items-start justify-center gap-4 mt-8">
-  <div class="flex items-center justify-center" >
-    <p-card header="Users" class="w-[21rem] cursor-pointer" [routerLink]="['/','user']" >
-      <p class="mb-2 font-bold">Manage USERS</p>
+<div class="flex items-start justify-center gap-6 mt-10">
+  <!-- Carte Users -->
+  <p-card
+    header="Users"
+    class="card-selection"
+    styleClass="hover:bg-green-50"
+    [routerLink]="['/user']"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center justify-center text-lg font-semibold text-blue-700">
+        <i class="pi pi-users mr-2"></i> Users
+      </div>
+    </ng-template>
+    <div class="p-4 text-center">
+      <p class="mb-2 text-lg font-bold text-gray-800">Manage USERS</p>
+      <p class="text-gray-600">Search and edit USERS</p>
+    </div>
+  </p-card>
 
-      <p class="">Search and edit USERS</p>
-    </p-card>
-  </div>
-
-  <div class="flex items-center justify-center" >
-    <p-card header="Users" class="w-[21rem] cursor-pointer" [routerLink]="['/','todo']" >
-      <p class="mb-2 font-bold">Manage TODO</p>
-
-      <p class="">Search and edit TODO</p>
-    </p-card>
-  </div>
-
-
+  <!-- Carte TODO -->
+  <p-card
+    header="Todos"
+    class="card-selection"
+    styleClass="hover:bg-green-50"
+    [routerLink]="['/todo']"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center justify-center text-lg font-semibold text-green-700">
+        <i class="pi pi-check-square mr-2"></i> Todos
+      </div>
+    </ng-template>
+    <div class="p-4 text-center">
+      <p class="mb-2 text-lg font-bold text-gray-800">Manage TODO</p>
+      <p class="text-gray-600">Search and edit TODO</p>
+    </div>
+  </p-card>
 </div>

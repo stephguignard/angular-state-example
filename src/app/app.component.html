@@ -1,5 +1,11 @@
-<p-menubar [model]="items"></p-menubar>
-<div class="p-3">
+<header class="shadow fixed top-0 right-0 left-0 z-40">
+  <p-menubar [model]="items"></p-menubar>
+</header>
+
+<div class="mt-[80px]">
   <router-outlet />
 </div>
 
+<footer class="fixed inset-x-0 bottom-0 bg-stone-50 justify-items-end  text-right p-2 text-color text-xs inset-shadow-sm">
+    2025 Copyright sgd
+</footer>
