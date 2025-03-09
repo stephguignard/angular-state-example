@@ -1,0 +1,32 @@
+<div>
+  <h2>Todo List</h2>
+
+  <!-- Champ de recherche -->
+  <input (input)="updateQuery($event)" placeholder="Rechercher..." />
+
+  <!-- Ajout d'une nouvelle tâche -->
+  <div>
+    <input [(ngModel)]="newTodo" placeholder="Ajouter une tâche..." />
+    <button (click)="addTodo()">Ajouter</button>
+  </div>
+
+  <!-- Affichage des erreurs -->
+  <div *ngIf="todoStore.hasError()" class="error">
+    Une erreur est survenue. Veuillez réessayer.
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="todoStore.isLoading()">Chargement des tâches...</div>
+
+  <!-- Liste des tâches -->
+  <ul>
+    <li *ngFor="let todo of todoStore.sortedTodos()">
+      <input type="checkbox" [checked]="todo.completed" (change)="toggleTodo(todo.id)" />
+      <span [ngClass]="{ 'completed': todo.completed }">{{ todo.text }}</span>
+      <button (click)="removeTodo(todo.id)">❌</button>
+    </li>
+  </ul>
+
+  <!-- Affichage du nombre total de tâches -->
+  <p>🌟 {{ todoStore.todosCount() }} tâches enregistrées</p>
+</div>

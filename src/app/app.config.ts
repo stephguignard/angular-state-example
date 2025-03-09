@@ -6,6 +6,7 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {providePrimeNG} from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import {definePreset} from '@primeng/themes';
+import {provideHttpClient} from '@angular/common/http';
 
 // Définir un preset personnalisé en étendant Lara
 const CustomPreset = definePreset(Lara, {
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideHttpClient(),
     providePrimeNG({
       theme: {
         preset: CustomPreset,
