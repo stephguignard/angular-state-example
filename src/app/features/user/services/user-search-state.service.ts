@@ -1,67 +1,79 @@
-import {computed, effect, Injectable, Signal, signal} from '@angular/core';
-import {User} from '../models/user';
-import {UserRepositoryService} from './user-repository.service';
-import {UserQueryFilter} from '../models/user-query-filter';
+import {computed, Injectable, Signal, signal} from '@angular/core';
+import { User } from '../models/user';
+import { UserRepositoryService } from './user-repository.service';
+import { UserQueryFilter } from '../models/user-query-filter';
 
-const initQueryFilter: UserQueryFilter = {
-  name: '',
-  firstName: '',
-  email: ''
+export interface UserState {
+  users: User[];
+  loading: boolean;
+  query: UserQueryFilter;
+  page: number;
 }
+
+const initialState: UserState = {
+  users: [],
+  loading: false,
+  query: { name: '', firstName: '', email: '' },
+  page: 1
+};
 
 @Injectable()
 export class UserSearchStateService {
-
-  private users = signal<User[]>([]);
-  private loading = signal<boolean>(false);
-  private query = signal<UserQueryFilter>(initQueryFilter);
-  private page = signal<number>(1);
+  private state = signal<UserState>(initialState);
   private itemsPerPage = 5;
 
-  constructor(private repository: UserRepositoryService) {
-  }
+  constructor(private repository: UserRepositoryService) {}
 
   setFilters(query: UserQueryFilter, page: number) {
-    this.query.set(query);
-    this.page.set(page);
+    this.state.set({
+      ...this.state(),
+      query,
+      page
+    });
     this.loadUsers();
   }
 
   private loadUsers() {
-    this.loading.set(true);
-    const query = this.query();
-    const page = this.page();
+    this.setState({ loading: true });
+
+    const { query, page } = this.state();
 
     this.repository.getUsersPaginated(page, this.itemsPerPage, query).subscribe(users => {
-      this.users.set(users);
-      this.loading.set(false);
+      this.setState({ users, loading: false });
     });
   }
 
   setQuery(query: UserQueryFilter) {
-    this.query.set(query);
-    this.page.set(1);
+    this.setState({ query, page: 1 });
+    this.loadUsers();
   }
 
   setPage(page: number) {
-    this.page.set(page);
+    this.setState({ page });
+    this.loadUsers();
   }
 
-  // Exposition des signaux en lecture seule
+  private setState(partialState: Partial<UserState>) {
+    this.state.set({
+      ...this.state(),
+      ...partialState
+    });
+  }
+
+  // ✅ Correction : Utilisation de `computed()` pour exposer les signaux dérivés
   getUsersSignal(): Signal<User[]> {
-    return this.users.asReadonly();
+    return computed(() => this.state().users);
   }
 
   getLoadingSignal(): Signal<boolean> {
-    return this.loading.asReadonly();
+    return computed(() => this.state().loading);
   }
 
-  getQuerySignal() {
-    return this.query.asReadonly();
+  getQuerySignal(): Signal<UserQueryFilter> {
+    return computed(() => this.state().query);
   }
 
-  getPageSignal() {
-    return this.page.asReadonly();
+  getPageSignal(): Signal<number> {
+    return computed(() => this.state().page);
   }
-
 }

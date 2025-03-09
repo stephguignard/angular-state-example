@@ -1,12 +1,11 @@
-import {Component, computed, effect, OnDestroy, OnInit, Signal} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {UserSearchStateService} from '../../services/user-search-state.service';
-import {UserSearchComponent} from '../../components/user-search/user-search.component';
-import {UserTableComponent} from '../../components/user-table/user-table.component';
-import {Card} from 'primeng/card';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {Subject, takeUntil} from 'rxjs';
+import {Component, effect, Signal, OnInit, computed, untracked} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UserSearchStateService } from '../../services/user-search-state.service';
+import { UserSearchComponent } from '../../components/user-search/user-search.component';
+import { UserTableComponent } from '../../components/user-table/user-table.component';
+import { Card } from 'primeng/card';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-search-list-page',
@@ -20,28 +19,49 @@ import {Subject, takeUntil} from 'rxjs';
   templateUrl: './user-search-list-page.component.html',
   styleUrl: './user-search-list-page.component.scss'
 })
-export class UserSearchListPageComponent implements OnDestroy{
-  private destroy$ = new Subject<void>();
+export class UserSearchListPageComponent  {
+  private queryParams: Signal<Params>;
+  //private isSyncingStateToURL = false; // ✅ Flag pour éviter les boucles infinies
 
   constructor(
     private userSearchStateService: UserSearchStateService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Sync URL to State
-    this.setRouteSubscription(this.route)
-    // Sync State to URL
-    this.updateQueryParams();
+    this.queryParams = toSignal(this.route.queryParams, { initialValue: {} });
+    // ✅ Chargement initial des données sans double appel
+    this.initData();
+    // ✅ Synchronisation `State -> URL` avec vérification pour éviter les boucles
+    this.syncUrlToState();
+    // ✅ Synchronisation `URL -> State`
+    this.syncStateToUrl();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private initData() {
+    const initialQuery = this.userSearchStateService.getQuerySignal()();
+    const initialPage = this.userSearchStateService.getPageSignal()();
+    console.log('📌 Load initial data...');
+    this.userSearchStateService.setFilters(initialQuery, initialPage);
   }
 
-  private setRouteSubscription(route: ActivatedRoute) {
-    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      console.log('Params changés subscribe:', params);
+  private syncStateToUrl() {
+    effect(() => {
+      const query = this.userSearchStateService.getQuerySignal()();
+      const page = this.userSearchStateService.getPageSignal()();
+
+      this.router.navigate([], {
+        queryParams: {...query, page},
+        queryParamsHandling: 'merge'
+      })
+
+    });
+  }
+
+  private syncUrlToState() {
+    effect(() => {
+      const params = this.queryParams();
+      console.log('📌 URL Params changed:', params);
+
       const query = {
         name: params['name'] || '',
         firstName: params['firstName'] || '',
@@ -49,31 +69,13 @@ export class UserSearchListPageComponent implements OnDestroy{
       };
       const page = Number(params['page']) || 1;
 
-      if (Object.keys(params).length===0){
-        this.router.navigate([], {
-          queryParams: { ...query, page },
-          queryParamsHandling: 'merge'
-        });
-      }else{
-        this.userSearchStateService.setFilters(query,page);
+      if (JSON.stringify(query) !== JSON.stringify(untracked(this.userSearchStateService.getQuerySignal())) || page !== untracked(this.userSearchStateService.getPageSignal())) {
+        console.log("📡 Update state from URL");
+        this.userSearchStateService.setFilters(query, page);
       }
     });
   }
 
-  private updateQueryParams() {
-    effect(() => {
-      const query = this.userSearchStateService.getQuerySignal()();
-      const page = this.userSearchStateService.getPageSignal()();
-
-      //console.log('currentState :',this.currentState());
-
-      this.router.navigate([], {
-        queryParams: { ...query, page },
-        queryParamsHandling: 'merge'
-      });
-    });
-
-  }
 
   onUserEdit(userId: number) {
     this.router.navigate(['/user', userId]);
