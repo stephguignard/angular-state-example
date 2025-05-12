@@ -34,4 +34,22 @@
       <p class="text-gray-600">Search and edit TODO</p>
     </div>
   </p-card>
+
+  <!-- Carte DYNFORM -->
+  <p-card
+    header="Dynamic forms"
+    class="card-selection"
+    styleClass="hover:bg-green-50"
+    [routerLink]="['/dynform']"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex items-center justify-center text-lg font-semibold text-green-700">
+        <i class="pi pi-check-square mr-2"></i> Dynamic forms
+      </div>
+    </ng-template>
+    <div class="p-4 text-center">
+      <p class="mb-2 text-lg font-bold text-gray-800">Dynamic forms</p>
+      <p class="text-gray-600">Example dynamic forms + jsonlogic</p>
+    </div>
+  </p-card>
 </div>

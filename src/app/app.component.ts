@@ -29,6 +29,11 @@ export class AppComponent implements OnInit {
         label: 'ToDo',
         icon: 'pi pi-envelope',
         routerLink: '/todo',
+      },
+      {
+        label: 'DynForm',
+        icon: 'pi pi-file-o',
+        routerLink: '/dynform',
       }
     ]
   }

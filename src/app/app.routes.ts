@@ -16,6 +16,10 @@ export const routes: Routes = [
         path: 'todo',
         loadChildren: () => import('./features/todo/todo.routes').then((r) => r.TODO_ROUTE),
       },
+      {
+        path: 'dynform',
+        loadChildren: () => import('./features/dynform/dynform.routes').then((r) => r.DYNFORM_ROUTE),
+      },
 
       { path: '**', redirectTo: '/home' },
     ],
