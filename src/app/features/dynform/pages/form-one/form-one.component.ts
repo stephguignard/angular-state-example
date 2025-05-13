@@ -119,6 +119,42 @@ export class FormOneComponent {
       },
 
     },
+    {
+      key: 'children',
+      type: 'repeat-table',
+      templateOptions: {
+        addText: 'Ajouter un enfant',
+        columns: [
+          { key: 'name', label: 'Nom' },
+          { key: 'age', label: 'Âge' },
+        ],
+      },
+      fieldArray: {
+        fieldGroup: [
+          {
+            key: 'name',
+            type: 'input',
+            props: {
+              required: true,
+            },
+          },
+          {
+            key: 'age',
+            type: 'input',
+            props: {
+              type: 'number',
+              required: true,
+            },
+            validators: {
+              max18: {
+                expression: (control:any) => !control.value || control.value <= 18,
+                message: 'L’âge ne doit pas dépasser 18 ans',
+              },
+            },
+          },
+        ],
+      },
+    }
   ];
 
   constructor() {
