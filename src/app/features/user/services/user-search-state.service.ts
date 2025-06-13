@@ -1,87 +1,89 @@
-import { computed, Injectable, signal } from '@angular/core';
+import {computed, effect, inject, Injectable, signal, untracked} from '@angular/core';
 import { User } from '../models/user';
 import { UserRepositoryService } from './user-repository.service';
 import { UserQueryFilter } from '../models/user-query-filter';
 import { catchError, of } from 'rxjs';
 
+
+export interface UserSearchParamsState {
+  query: UserQueryFilter;
+  page: number;
+}
+
+const initialSearchParamsState:UserSearchParamsState = {
+  query: { name: '', firstName: '', email: '' },
+  page: 1
+}
+
 export interface UserState {
   users: User[];
   loading: boolean;
-  query: UserQueryFilter;
-  page: number;
   error: string | null;
 }
 
-const initialState: UserState = {
-  users: [],
-  loading: false,
-  query: { name: '', firstName: '', email: '' },
-  page: 1,
-  error: null
-};
+const initialUserState: UserState = {
+    users: [],
+    loading: false,
+    error: null
+}
 
 @Injectable()
 export class UserSearchStateService {
-  private readonly state = signal<UserState>(initialState);
-  private itemsPerPage = 5;
+  private readonly userRepositoryService = inject(UserRepositoryService);
+  private readonly itemsPerPage = 5;
 
-  public readonly users = computed(() => this.state().users);
-  public readonly loading = computed(() => this.state().loading);
-  public readonly query = computed(() => this.state().query);
-  public readonly page = computed(() => this.state().page);
-  public readonly error = computed(() => this.state().error);
+  // 📥 État de recherche (déclencheurs)
+  private readonly userSearchParamsState = signal<UserSearchParamsState>(initialSearchParamsState);
 
-  constructor(private repository: UserRepositoryService) {}
+  // 📦 Résultat de recherche
+  private readonly userState = signal<UserState>(initialUserState);
 
+  // 📤 Exposition publique
+  public readonly users = computed(() => this.userState().users);
+  public readonly loading = computed(() => this.userState().loading);
+  public readonly error = computed(() => this.userState().error);
+  public readonly query = computed(() => this.userSearchParamsState().query);
+  public readonly page = computed(() => this.userSearchParamsState().page);
 
-  setFilters(query: UserQueryFilter, page: number) {
-    this.setState({ query, page, loading: true, error: null });
-
-    this.repository.getUsersPaginated(page, this.itemsPerPage, query).pipe(
-      catchError(error => {
-        console.error('Erreur lors du chargement des utilisateurs:', error);
-        this.setState({ error: 'Une erreur est survenue lors du chargement des utilisateurs.', loading: false });
-        return of([]);
-      })
-    ).subscribe(users => {
-      this.setState({ users, loading: false });
+  constructor() {
+    effect(() => {
+      this.loadData();
     });
   }
 
-  private loadUsers() {
-    this.setState({ loading: true, error: null });
+  private loadData() {
+    const {query, page} = this.userSearchParamsState();
 
-    const { query, page } = this.state();
+    this.userState.update(userSearchResult => ({...userSearchResult, loading: true, error: null}));
 
-    this.repository.getUsersPaginated(page, this.itemsPerPage, query).pipe(
+    this.userRepositoryService.getUsersPaginated(page, this.itemsPerPage, query).pipe(
       catchError(error => {
-        console.error('Erreur lors du chargement des utilisateurs:', error);
-        this.setState({ error: 'Impossible de récupérer les utilisateurs.', loading: false });
+        console.error('Erreur chargement utilisateurs :', error);
+        this.userState.update(userSearchResult => ({
+          ...userSearchResult,
+          loading: false,
+          error: 'Erreur lors du chargement des utilisateurs.'
+        }));
         return of([]);
       })
     ).subscribe(users => {
-      this.setState({ users, loading: false });
+      this.userState.update(userSearchResult => ({...userSearchResult, users, loading: false}));
     });
+  }
+
+  setFilters(query: UserQueryFilter, page: number) {
+    this.userSearchParamsState.set({ query, page });
   }
 
   setQuery(query: UserQueryFilter) {
-    this.setState({ query, page: 1, error: null });
-    this.loadUsers();
+    this.userSearchParamsState.update(p => ({ ...p, query, page: 1 }));
   }
 
   setPage(page: number) {
-    this.setState({ page, error: null });
-    this.loadUsers();
+    this.userSearchParamsState.update(p => ({ ...p, page }));
   }
 
   clearError() {
-    this.setState({ error: null });
-  }
-
-  private setState(partialState: Partial<UserState>) {
-    this.state.set({
-      ...this.state(),
-      ...partialState
-    });
+    this.userState.update(r => ({ ...r, error: null }));
   }
 }
