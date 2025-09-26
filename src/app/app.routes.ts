@@ -20,7 +20,10 @@ export const routes: Routes = [
         path: 'dynform',
         loadChildren: () => import('./features/dynform/dynform.routes').then((r) => r.DYNFORM_ROUTE),
       },
-
+      {
+        path: 'invoice',
+        loadChildren: () => import('./features/invoice/invoice.routes').then(r => r.INVOICE_ROUTE),
+      },
       { path: '**', redirectTo: '/home' },
     ],
   },

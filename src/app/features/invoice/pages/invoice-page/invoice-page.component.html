@@ -1,0 +1,67 @@
+<section class="flex flex-wrap items-center gap-2 mb-3">
+  <input [(ngModel)]="searchText" (ngModelChange)="onSearch($event)" placeholder="Search…" class="border p-2 rounded w-64" />
+
+  <select [(ngModel)]="status" (ngModelChange)="onStatus($event)" class="border p-2 rounded">
+    <option [ngValue]="null">All statuses</option>
+    <option *ngFor="let s of statuses" [ngValue]="s">{{ s }}</option>
+  </select>
+
+  <input type="number" min="2000" max="2100" [(ngModel)]="yearInput" (ngModelChange)="onYear($event)" class="border p-2 rounded w-28" placeholder="Year" />
+
+  <button (click)="facade.listRes.reload()" class="border px-3 py-2 rounded">Reload</button>
+  <button (click)="newInvoice()" class="border px-3 py-2 rounded">New</button>
+</section>
+
+<ng-container *ngIf="facade.listRes.value(); else listLoading">
+  <p class="text-sm text-gray-500 mb-2">
+    {{ facade.listRes.value()?.total }} invoices • page {{ state.page() }}
+  </p>
+  <ul class="divide-y border rounded">
+    <li *ngFor="let inv of facade.listRes.value()!.items" class="p-3 flex items-center justify-between">
+      <div class="flex-1">
+        <a [routerLink]="['/invoices', inv.id]" class="font-medium hover:underline">{{ inv.number }}</a>
+        <div class="text-xs text-gray-500">
+          {{ inv.customerName }} • {{ inv.issueDate | date:'mediumDate' }} → due {{ inv.dueDate | date:'mediumDate' }}
+        </div>
+
+        <div class="text-xs" [ngSwitch]="inv.status">
+          <span *ngSwitchCase="'PAID'" class="text-green-700">PAID</span>
+          <span *ngSwitchCase="'OVERDUE'" class="text-red-700">OVERDUE</span>
+          <span *ngSwitchCase="'CANCELLED'" class="text-gray-500">CANCELLED</span>
+          <span *ngSwitchDefault class="text-blue-700">{{ inv.status }}</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="font-semibold">{{ inv.amount | currency: inv.currency : 'symbol' }}</div>
+        <div class="flex items-center gap-2">
+          <button (click)="edit(inv.id)" class="text-sm underline">Edit</button>
+          <button (click)="remove(inv)" class="text-sm text-red-700 underline">Delete</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="mt-3 flex items-center gap-2">
+    <button (click)="prev()" class="border px-2 py-1 rounded" [disabled]="state.page() === 1">Prev</button>
+    <button (click)="next()" class="border px-2 py-1 rounded">Next</button>
+  </div>
+</ng-container>
+
+<ng-template #listLoading>
+  <p *ngIf="facade.listRes.isLoading()">Loading list…</p>
+  <p *ngIf="facade.listRes.error()" class="text-red-700">{{ facade.listRes.error() | json }}</p>
+</ng-template>
+
+<section class="mt-8 border-t pt-4" *ngIf="detailVisible()">
+  <h2 class="font-semibold mb-2">Invoice detail</h2>
+
+  <ng-container *ngIf="facade.detailRes.value(); else detailLoading">
+    <pre class="bg-gray-50 p-3 rounded">{{ facade.detailRes.value() | json }}</pre>
+  </ng-container>
+
+  <ng-template #detailLoading>
+    <p *ngIf="facade.detailRes.isLoading()">Loading detail…</p>
+    <p *ngIf="facade.detailRes.error()" class="text-red-700">{{ facade.detailRes.error() | json }}</p>
+  </ng-template>
+</section>
