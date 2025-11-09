@@ -24,6 +24,10 @@ export const routes: Routes = [
         path: 'invoice',
         loadChildren: () => import('./features/invoice/invoice.routes').then(r => r.INVOICE_ROUTE),
       },
+      {
+        path: 'cva',
+        loadChildren: () => import('./features/cva/cva.routes').then(r => r.CVA_ROUTE),
+      },
       { path: '**', redirectTo: '/home' },
     ],
   },

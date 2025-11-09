@@ -34,6 +34,11 @@ export class AppComponent implements OnInit {
         label: 'DynForm',
         icon: 'pi pi-file-o',
         routerLink: '/dynform',
+      },
+      {
+        label: 'cva',
+        icon: 'pi pi-file-o',
+        routerLink: '/cva',
       }
     ]
   }

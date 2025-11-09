@@ -36,7 +36,7 @@
         <div class="font-semibold">{{ inv.amount | currency: inv.currency : 'symbol' }}</div>
         <div class="flex items-center gap-2">
           <button (click)="edit(inv.id)" class="text-sm underline">Edit</button>
-          <button (click)="remove(inv)" class="text-sm text-red-700 underline">Delete</button>
+<!--          <button (click)="remove(inv)" class="text-sm text-red-700 underline">Delete</button>-->
         </div>
       </div>
     </li>
@@ -53,7 +53,109 @@
   <p *ngIf="facade.listRes.error()" class="text-red-700">{{ facade.listRes.error() | json }}</p>
 </ng-template>
 
-<section class="mt-8 border-t pt-4" *ngIf="detailVisible()">
+<!-- Editeur PrimeNG + Tailwind -->
+<section *ngIf="editing()" class="mt-6">
+  <div class="border rounded-lg shadow-sm p-4 bg-white">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold">Edit Invoice</h2>
+      <div class="flex gap-2">
+        <button (click)="cancelEdit()" class="px-3 py-2 rounded bg-gray-100 hover:bg-gray-200">Annuler</button>
+        <button (click)="save()" class="px-3 py-2 rounded bg-green-600 text-white hover:bg-green-700">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Numéro</label>
+        <input class="border rounded p-2" [(ngModel)]="form().number" (ngModelChange)="updateField('number', $event)" placeholder="INV-2025-0001" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Client</label>
+        <input class="border rounded p-2" [(ngModel)]="form().customerName" (ngModelChange)="updateField('customerName', $event)" placeholder="ACME SA" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Date d'émission</label>
+        <p-calendar
+          appendTo="body"
+          [(ngModel)]="form().issueDateObj"
+          (ngModelChange)="updateField('issueDateObj', $event)"
+          dateFormat="yy-mm-dd"
+          inputId="issueDate"
+          class="w-full"
+        ></p-calendar>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Date d'échéance</label>
+        <p-calendar
+          appendTo="body"
+          [(ngModel)]="form().dueDateObj"
+          (ngModelChange)="updateField('dueDateObj', $event)"
+          dateFormat="yy-mm-dd"
+          inputId="dueDate"
+          class="w-full"
+        ></p-calendar>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Date de paiement (optionnel)</label>
+        <p-calendar
+          appendTo="body"
+          [(ngModel)]="form().paidDateObj"
+          (ngModelChange)="updateField('paidDateObj', $event)"
+          dateFormat="yy-mm-dd"
+          inputId="paidDate"
+          class="w-full"
+          [showIcon]="true"
+          [showButtonBar]="true"
+          [showTime]="false"
+        ></p-calendar>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Statut</label>
+        <p-dropdown
+          [options]="statuses"
+          [(ngModel)]="form().status"
+          (ngModelChange)="updateField('status', $event)"
+          [style]="{ width: '100%' }"
+          [placeholder]="'Choisir un statut'"
+          [showClear]="false"
+          optionLabel=""
+        >
+          <ng-template let-option pTemplate="item">
+            <div class="text-sm">{{ option }}</div>
+          </ng-template>
+          <ng-template let-value pTemplate="selectedItem">
+            <div class="text-sm">{{ value }}</div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Devise</label>
+        <p-dropdown
+          [options]="['CHF','EUR','USD']"
+          [(ngModel)]="form().currency"
+          (ngModelChange)="updateField('currency', $event)"
+          [style]="{ width: '100%' }"
+          [placeholder]="'Devise'"
+        ></p-dropdown>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Montant</label>
+        <input type="number" min="0" step="0.01" class="border rounded p-2"
+               [(ngModel)]="form().amount" (ngModelChange)="updateField('amount', $event)" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Détail (lecture seule) -->
+<section class="mt-8 border-t pt-4" *ngIf="!editing() && detailVisible()">
   <h2 class="font-semibold mb-2">Invoice detail</h2>
 
   <ng-container *ngIf="facade.detailRes.value(); else detailLoading">

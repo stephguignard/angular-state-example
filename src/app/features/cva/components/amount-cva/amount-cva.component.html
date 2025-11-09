@@ -1,0 +1,28 @@
+<label *ngIf="label()">{{ label() }}</label>
+
+<p-inputNumber
+  [dt]="{ input: { class: 'border border-slate-400 rounded' } }"
+  [ngModel]="innerModel()"
+  (ngModelChange)="onInnerChange($event)"
+  [ngModelOptions]="{ standalone: true }"
+  (onBlur)="handleBlur()"
+  [min]="min() ?? null"
+  [max]="max() ?? null"
+  [step]="step()"
+  [mode]="mode()"
+  [prefix]="prefix() ?? undefined"
+  [suffix]="suffix() ?? undefined"
+  [useGrouping]="useGrouping()"
+  [disabled]="isDisabled()"
+  [inputStyleClass]="showError() ? 'p-invalid' : ''"
+  [placeholder]="placeholder() ?? undefined">
+</p-inputNumber>
+
+<!-- Debug facultatif -->
+<div class="text-xs mt-1" *ngIf="debug()">
+  status: {{ status() }}
+  | touched: {{ touched() }}
+  | dirty: {{ dirty() }}
+  | submitted: {{ submitted() }}
+  | isInvalid: {{ isInvalid() }}
+</div>

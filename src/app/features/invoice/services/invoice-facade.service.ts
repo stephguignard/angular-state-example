@@ -1,5 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {InvoiceRepositoryService} from './invoice-repository.service';
 import {InvoiceStateService} from './invoice-state.service';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {CreateInvoice, Invoice, UpdateInvoice} from '../models/invoice.model';
