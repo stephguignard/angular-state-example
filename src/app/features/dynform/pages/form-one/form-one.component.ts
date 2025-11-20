@@ -7,17 +7,22 @@ import {PanelFieldWrapperComponent} from '../../components/panel-field-wrapper/p
 import {FormlyFieldWithLogic} from '../../utils/FormlyFieldWithLogic';
 import jsonLogic from 'json-logic-js';
 
+
 @Component({
   selector: 'app-form-one',
+  standalone: true,
   imports: [
-    ReactiveFormsModule, FormlyForm, Button, JsonPipe
+    ReactiveFormsModule,
+    FormlyForm,
+    Button,
+    JsonPipe,
   ],
   templateUrl: './form-one.component.html',
-  styleUrl: './form-one.component.scss'
+  styleUrl: './form-one.component.scss',
 })
 export class FormOneComponent {
   form = new FormGroup({});
-  model = {};
+  model: any = {};
 
   fields: FormlyFieldWithLogic[] = [
     {
@@ -65,12 +70,13 @@ export class FormOneComponent {
         label: 'Textarea',
         placeholder: 'Textarea placeholder',
         required: true,
-      },
-      ['x-jsonLogic-visibility']: {
-        "and": [
-          { "===": [{ "var": "select" }, '2'] },
-          { "===": [{ "var": "checkbox" }, true] }
-        ]
+        // 👇 jsonLogic dans props
+        'x-jsonLogic-visibility': {
+          and: [
+            { '===': [{ var: 'select' }, '2'] },
+            { '===': [{ var: 'checkbox' }, true] },
+          ],
+        },
       },
     },
     {
@@ -103,22 +109,106 @@ export class FormOneComponent {
       props: {
         label: 'Adresse email',
         required: true,
+        'x-jsonLogic-visibility': {
+          or: [
+            {
+              and: [
+                { '===': [{ var: 'subscribe' }, true] },
+                { '>': [{ var: 'radio' }, 3] },
+              ],
+            },
+            {
+              '===': [{ var: 'input' }, 'salut'],
+            },
+          ],
+        },
       },
-      ['x-jsonLogic-visibility']: {
-        "or": [
-          {
-            "and": [
-              { "===": [{ "var": "subscribe" }, true] },
-              { ">": [{ "var": "radio" }, 3] }
-            ]
-          },
-          {
-            "===": [{ "var": "input" }, "salut"]
-          }
-        ]
-      },
-
     },
+
+    // ============================
+    //  EXEMPLE MULTI-NIVEAUX
+    // ============================
+    {
+      key: 'person',
+      wrappers: [PanelFieldWrapperComponent],
+      props: {
+        label: 'Personne',
+        styleClass: 'mb-4',
+      },
+      fieldGroup: [
+        {
+          key: 'firstName',
+          type: 'input',
+          props: {
+            label: 'Prénom',
+            required: true,
+          },
+        },
+        {
+          key: 'age',
+          type: 'input',
+          props: {
+            type: 'number',
+            label: 'Âge',
+            required: true,
+          },
+        },
+        {
+          key: 'address',
+          wrappers: [PanelFieldWrapperComponent],
+          props: {
+            label: 'Adresse',
+          },
+          fieldGroup: [
+            {
+              key: 'street',
+              type: 'input',
+              props: {
+                label: 'Rue',
+                required: true,
+              },
+            },
+            {
+              key: 'zip',
+              type: 'input',
+              props: {
+                label: 'NPA',
+                required: true,
+              },
+            },
+            {
+              key: 'country',
+              type: 'select',
+              props: {
+                label: 'Pays',
+                required: true,
+                options: [
+                  { label: 'Suisse', value: 'CH' },
+                  { label: 'France', value: 'FR' },
+                  { label: 'Italie', value: 'IT' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          key: 'comment',
+          type: 'textarea',
+          props: {
+            label: 'Commentaire (Suisse + majeur)',
+            placeholder: 'Visible seulement si Suisse et âge >= 18',
+            // 👇 multi-niveau person.age + person.address.country
+            'x-jsonLogic-visibility': {
+              and: [
+                { '>=': [{ var: 'person.age' }, 18] },
+                { '===': [{ var: 'person.address.country' }, 'CH'] },
+              ],
+            },
+          },
+        },
+      ],
+    },
+
     {
       key: 'children',
       type: 'repeat-table',
@@ -147,29 +237,56 @@ export class FormOneComponent {
             },
             validators: {
               max18: {
-                expression: (control:any) => !control.value || control.value <= 18,
+                expression: (control: any) =>
+                  !control.value || control.value <= 18,
                 message: 'L’âge ne doit pas dépasser 18 ans',
               },
             },
           },
         ],
       },
-    }
+    },
   ];
 
   constructor() {
-    this.applyJsonLogicToFields(this.fields, this.model);
+    this.fields = this.applyJsonLogicToFields(this.fields);
   }
 
-  applyJsonLogicToFields(fields: FormlyFieldWithLogic[], model: any): FormlyFieldWithLogic[] {
-    return fields.map(field => {
-      const logic = (field as any)['x-jsonLogic-visibility'];
+  /**
+   * Parcourt récursivement tous les champs et,
+   * si props['x-jsonLogic-visibility'] est défini, crée une expression Formly 'hide'
+   * basée sur json-logic et le model complet.
+   */
+  private applyJsonLogicToFields(fields: FormlyFieldWithLogic[]): FormlyFieldWithLogic[] {
+    return fields.map((field) => {
+      if (typeof field === 'function') {
+        return field as FormlyFieldWithLogic;
+      }
+
+      const logic = (field.props as any)?.['x-jsonLogic-visibility'];
+
       if (logic) {
-        field.expressions = {hide: () => !jsonLogic.apply(logic, model)} ;
+        field.expressions = {
+          ...(field.expressions ?? {}),
+          hide: () => !jsonLogic.apply(logic, this.model),
+        };
       }
+
       if (field.fieldGroup) {
-        field.fieldGroup = this.applyJsonLogicToFields(field.fieldGroup, model);
+        field.fieldGroup = this.applyJsonLogicToFields(
+          field.fieldGroup as FormlyFieldWithLogic[],
+        );
       }
+
+      if (field.fieldArray && typeof field.fieldArray !== 'function') {
+        const fa = field.fieldArray as FormlyFieldWithLogic;
+        if (fa.fieldGroup) {
+          fa.fieldGroup = this.applyJsonLogicToFields(
+            fa.fieldGroup as FormlyFieldWithLogic[],
+          );
+        }
+      }
+
       return field;
     });
   }

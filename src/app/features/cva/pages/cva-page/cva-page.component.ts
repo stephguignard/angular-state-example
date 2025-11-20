@@ -46,4 +46,9 @@ export class CvaPageComponent {
     this.form.get('amount')?.markAsTouched({ onlySelf: false, emitEvent: false});
     console.log('touchAmount', this.form.get('amount')?.touched);
   }
+
+  protected dirtyAmount() {
+    this.form.get('amount')?.markAsDirty({ onlySelf: false, emitEvent: false});
+    console.log('touchAmount', this.form.get('amount')?.touched);
+  }
 }
