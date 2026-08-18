@@ -25,9 +25,9 @@ export class UserSearchRxResourceStateService {
 
   // 📡 Appel backend automatique via rxResource
   private readonly userStateResource = rxResource<User[], UserSearchParamsState>({
-    request: this.userSearchParamsState,
-    loader: (filter) =>
-      this.userRepositoryService.getUsersPaginated(filter.request.page, this.itemsPerPage, filter.request.query),
+    params: this.userSearchParamsState,
+    stream: (filter) =>
+      this.userRepositoryService.getUsersPaginated(filter.params.page, this.itemsPerPage, filter.params.query),
     defaultValue: []
   });
 

@@ -12,22 +12,22 @@ export class InvoiceFacadeService {
 
 // List (depends on URL-backed query)
   readonly listRes = rxResource({
-    request: () => ({
+    params: () => ({
       page: this.state.page(),
       pageSize: this.state.pageSize(),
       q: this.state.q(),
       status: this.state.status(),
       year: this.state.year(),
     }),
-    loader: ({ request }) => this.repo.list(request),
+    stream: ({ params }) => this.repo.list(params),
   });
 
 
 // Detail (depends on selectedId)
   readonly detailRes = rxResource({
-    request: () => this.state.selectedId(),
-    loader: ({ request }) => {
-      const id = request;
+    params: () => this.state.selectedId(),
+    stream: ({ params }) => {
+      const id = params;
       return id == null ? (null as any) : this.repo.getById(id);
     },
   });
