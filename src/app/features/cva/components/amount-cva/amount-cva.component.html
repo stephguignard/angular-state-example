@@ -1,4 +1,6 @@
-<label *ngIf="label()">{{ label() }}</label>
+@if (label()) {
+  <label>{{ label() }}</label>
+}
 
 <p-inputNumber
   [dt]="{ input: { class: 'border border-slate-400 rounded' } }"
@@ -19,10 +21,12 @@
 </p-inputNumber>
 
 <!-- Debug facultatif -->
-<div class="text-xs mt-1" *ngIf="debug()">
-  status: {{ status() }}
-  | touched: {{ touched() }}
-  | dirty: {{ dirty() }}
-  | submitted: {{ submitted() }}
-  | isInvalid: {{ isInvalid() }}
-</div>
+@if (debug()) {
+  <div class="text-xs mt-1">
+    status: {{ status() }}
+    | touched: {{ touched() }}
+    | dirty: {{ dirty() }}
+    | submitted: {{ submitted() }}
+    | isInvalid: {{ isInvalid() }}
+  </div>
+}

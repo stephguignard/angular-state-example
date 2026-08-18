@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgFor} from '@angular/common';
+
 import {FormlyField, FieldArrayType, FormlyFieldConfig} from '@ngx-formly/core';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
@@ -10,12 +10,12 @@ import {InputNumberModule} from 'primeng/inputnumber';
 @Component({
   selector: 'app-repeat-table-type',
   imports: [
-    NgFor,
     TableModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,
-    FormlyField],
+    FormlyField
+],
   templateUrl: './repeat-table-type.component.html',
   styleUrl: './repeat-table-type.component.scss'
 })

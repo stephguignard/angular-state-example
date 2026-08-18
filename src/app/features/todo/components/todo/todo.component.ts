@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TodoStore} from '../../store/todo.store';
 import {FormsModule} from '@angular/forms';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {TodoService} from '../../services/todo.service';
 import {InputText} from 'primeng/inputtext';
 import {Button} from 'primeng/button';
@@ -13,13 +13,11 @@ import {Checkbox} from 'primeng/checkbox';
   imports: [
     FormsModule,
     NgClass,
-    NgIf,
-    NgForOf,
     InputText,
     Button,
     ProgressBar,
     Checkbox
-  ],
+],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
   providers: [TodoStore],

@@ -1,16 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { InvoiceFacadeService } from '../../services/invoice-facade.service';
 import { Invoice, InvoiceStatus, UpdateInvoice } from '../../models/invoice.model';
-import {
-  CurrencyPipe,
-  DatePipe,
-  JsonPipe,
-  NgForOf,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault
-} from '@angular/common';
+import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {DatePicker} from 'primeng/datepicker';
@@ -26,18 +17,13 @@ import {SelectModule} from 'primeng/select';
   standalone: true,
   imports: [
     CurrencyPipe,
-    NgSwitch,
     RouterLink,
     FormsModule,
     JsonPipe,
     DatePipe,
-    NgIf,
-    NgSwitchDefault,
-    NgSwitchCase,
-    NgForOf,
     DatePicker,
     SelectModule
-  ],
+],
   templateUrl: './invoice-page.component.html',
   styleUrl: './invoice-page.component.scss',
   providers: [InvoiceFacadeService],

@@ -14,7 +14,7 @@ import {
   NgControl,
   NgForm,
 } from '@angular/forms';
-import { CommonModule, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { startWith } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-amount-cva',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputNumberModule, NgIf],
+  imports: [FormsModule, InputNumberModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './amount-cva.component.html',
   styles: [`

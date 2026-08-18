@@ -3,7 +3,7 @@ import {TableModule, TableRowSelectEvent} from 'primeng/table';
 import {User} from '../../models/user';
 import {UserSearchStateService} from '../../services/user-search-state.service';
 import {Button} from 'primeng/button';
-import {NgIf} from '@angular/common';
+
 import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
