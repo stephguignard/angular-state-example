@@ -77,31 +77,31 @@
 
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium">Date d'émission</label>
-        <p-calendar
+        <p-datepicker
           appendTo="body"
           [(ngModel)]="form().issueDateObj"
           (ngModelChange)="updateField('issueDateObj', $event)"
           dateFormat="yy-mm-dd"
           inputId="issueDate"
           class="w-full"
-        ></p-calendar>
+        ></p-datepicker>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium">Date d'échéance</label>
-        <p-calendar
+        <p-datepicker
           appendTo="body"
           [(ngModel)]="form().dueDateObj"
           (ngModelChange)="updateField('dueDateObj', $event)"
           dateFormat="yy-mm-dd"
           inputId="dueDate"
           class="w-full"
-        ></p-calendar>
+        ></p-datepicker>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium">Date de paiement (optionnel)</label>
-        <p-calendar
+        <p-datepicker
           appendTo="body"
           [(ngModel)]="form().paidDateObj"
           (ngModelChange)="updateField('paidDateObj', $event)"
@@ -111,12 +111,12 @@
           [showIcon]="true"
           [showButtonBar]="true"
           [showTime]="false"
-        ></p-calendar>
+        ></p-datepicker>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium">Statut</label>
-        <p-dropdown
+        <p-select
           [options]="statuses"
           [(ngModel)]="form().status"
           (ngModelChange)="updateField('status', $event)"
@@ -131,18 +131,18 @@
           <ng-template let-value pTemplate="selectedItem">
             <div class="text-sm">{{ value }}</div>
           </ng-template>
-        </p-dropdown>
+        </p-select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium">Devise</label>
-        <p-dropdown
+        <p-select
           [options]="['CHF','EUR','USD']"
           [(ngModel)]="form().currency"
           (ngModelChange)="updateField('currency', $event)"
           [style]="{ width: '100%' }"
           [placeholder]="'Devise'"
-        ></p-dropdown>
+        ></p-select>
       </div>
 
       <div class="flex flex-col gap-1">

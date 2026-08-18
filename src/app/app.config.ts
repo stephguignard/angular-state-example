@@ -17,12 +17,6 @@ import {RepeatTableTypeComponent} from './features/dynform/components/repeat-tab
 
 // Définir un preset personnalisé en étendant Lara
 const CustomPreset = definePreset(Lara, {
-  // Définir des couleurs primitives personnalisées
-  primitive: {
-    customPrimary: {
-      500: '#FF5733', // Remplacez par la couleur hexadécimale souhaitée
-    },
-  },
   // Mapper les couleurs sémantiques sur les couleurs primitives
   semantic: {
     primary: {

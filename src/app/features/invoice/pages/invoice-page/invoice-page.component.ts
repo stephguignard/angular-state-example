@@ -13,8 +13,8 @@ import {
 } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {Calendar} from 'primeng/calendar';
-import {DropdownModule} from 'primeng/dropdown';
+import {DatePicker} from 'primeng/datepicker';
+import {SelectModule} from 'primeng/select';
 
 /**
  * Composant de page des factures:
@@ -35,8 +35,8 @@ import {DropdownModule} from 'primeng/dropdown';
     NgSwitchDefault,
     NgSwitchCase,
     NgForOf,
-    Calendar,
-    DropdownModule
+    DatePicker,
+    SelectModule
   ],
   templateUrl: './invoice-page.component.html',
   styleUrl: './invoice-page.component.scss',
