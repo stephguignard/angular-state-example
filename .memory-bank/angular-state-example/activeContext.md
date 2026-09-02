@@ -1,13 +1,13 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (Playwright smoke for dynform)_
+_Last updated: 2026-09-02 (chore/dynform-smoke merged to main)_
 
 ## Current branch
 
-**`chore/dynform-smoke`** off `main` (`b66ebd3`) — not pushed. Adds `@playwright/test`
-+ `e2e/dynform.e2e.ts` + `playwright.config.ts` + `npm run e2e` + `.gitignore` /
-`jest.config.js` (ignore `e2e/`) + doc updates. [[decisions]] #14. `npm run e2e`
-green; screenshot verified. `main` == `origin/main`.
+**`main` only** — HEAD `5f1c2cc`, == `origin/main`. Working tree clean, nothing in
+flight. All four this-session branches were ff-merged into `main` and deleted
+(local-only from `chore/build-cleanup` on — never pushed as branches). New work →
+new branch off `main`.
 
 `ng build` prod **and** dev finish with **zero WARNING/ERROR lines**;
 `npm test` 25 suites / 37 tests green; `npm run e2e` 1 spec green.
@@ -23,12 +23,12 @@ validator config).
 
 ## In flight / recently done
 
-**In flight:** `chore/dynform-smoke` — committed on the branch, not pushed.
+Nothing in flight.
 
-This session (all merged to `main`): scss budget fix; Formly → `dynform` route
-(bundle 1.27 MB → 672 kB); build tooling → `@angular/build`; build cleanup
-(warnings silenced, `platform-browser-dynamic` dropped). Then `chore/dynform-smoke`
-(Playwright smoke — pending merge).
+This session (all on `main`): scss budget fix; Formly → `dynform` route (bundle
+1.27 MB → 672 kB, [[decisions]] #12); build tooling → `@angular/build` (#13);
+build cleanup (warnings silenced, `platform-browser-dynamic` dropped);
+Playwright smoke test for `/dynform` (#14).
 
 Earlier this day / pre-session (for context):
 

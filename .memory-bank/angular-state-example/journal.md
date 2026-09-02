@@ -44,7 +44,11 @@ one spec. The repo compares unit-level patterns; e2e stays a smoke check.
 - `npm i -D @playwright/test` resolved fine (no `--legacy-peer-deps` needed).
   `npx playwright install chromium` → ~650 MB in `~/.cache/ms-playwright`.
 
-**Next:** push / merge `chore/dynform-smoke`.
+**Done (merge):** ff-merged `chore/dynform-smoke` into `main` (`b66ebd3..5f1c2cc`),
+pushed `origin/main`, deleted the branch. `main` is the only branch again.
+
+**Next:** nothing pending. Open threads unchanged: deeper unit specs for
+non-`todo` patterns; Serena `angular` LSP ([[decisions]] #7).
 
 ---
 
