@@ -16,6 +16,25 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Delete feature/cva + session close
+**Done:**
+- Deleted `feature/cva` local + remote (`git branch -d` accepted — fully merged).
+  `main` (`c5a8dac`) is the only branch. Recorded in `activeContext` (`c5a8dac`).
+- `/bye` pass: reconciled `activeContext` / `progress` with the post-merge,
+  single-branch reality; trimmed stale "what's left" items (git-tracking
+  decisions already made).
+- Re-ran `npm test` → 25 suites / 37 tests green (no code changed since last run).
+
+**Decided:** nothing new structural.
+
+**Observed:** the "decide keep/delete feature/cva" thread from the previous entry
+is now closed — deleted.
+
+**Next:** open threads unchanged — deeper specs for non-`todo` patterns; optional
+`@angular/build` migration to drop the `karma` peer; optional Serena `angular` LSP.
+
+---
+
 ## 2026-09-02 — Merge feature/cva → main
 **Done:**
 - Fast-forward-merged `feature/cva` into `main` (`eb0a172..b5f55e7`) and pushed

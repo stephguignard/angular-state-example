@@ -1,43 +1,36 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (feature/cva merged into main + deleted)_
+_Last updated: 2026-09-02 (Jest + commit rules + feature/cva merged & deleted)_
 
 ## Current branch
 
-**`main` only** — HEAD `ed2666b`, pushed. `feature/cva` was fast-forward-merged
-into `main` (`eb0a172..b5f55e7`) then deleted (local + remote). `main` carries the
-full Angular 19 → 21 upgrade chain, the Jest migration, the memory bank and the
-commit rules. Working tree clean, nothing in flight. New work → new branch off
-`main`.
+**`main` only** — HEAD `c5a8dac`, == `origin/main`. Working tree clean, nothing
+in flight. `feature/cva` was fast-forwarded into `main` then deleted (local +
+remote); new work → new branch off `main`.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
-never pushed) was discarded during the merge — its content was already present
-in the merged history (verified: the `[dt]` inputNumber binding + `updateOn:
-'blur'` validator config).
+never pushed) was discarded during the merge — its content was already in the
+merged history (verified: the `[dt]` inputNumber binding + `updateOn: 'blur'`
+validator config).
 
 ## In flight / recently done
 
-- **Docs refresh** (`6d6a732`): `CLAUDE.md` + `README.md` for the Angular 21 stack.
-- **Agent tooling** (`ac4c2f5`): `.mcp.json` (git-ignored) with `memory-bank`
-  (`@allpepper/memory-bank-mcp`) + `serena` (`serena-agent` via `uvx`); `uv`
-  installed to `~/.local/bin`; `.serena/project.yml` committed.
-- **Memory bank** (`ac4c2f5`, `7f30d76`): 8 files under
-  `.memory-bank/angular-state-example/` incl. append-only `journal.md` +
-  `decisions.md`; `CLAUDE.md` points at the workflow (`85a0124`).
-- **Session commands** (`73d8765`): `.claude/commands/hello.md` (load memory +
-  status recap) and `.claude/commands/bye.md` (this housekeeping routine).
-- **Jest migration** (`3bfa245`, 2026-09-02): Karma/Jasmine → Jest
-  (`jest-preset-angular` 17). New `jest.config.js` + `setup-jest.ts`; rewrote
-  `tsconfig.spec.json`; dropped the `test` target from `angular.json`; removed
-  `karma*` / `jasmine*` / `@types/jasmine` devDeps; `npm test` → `jest`. All 12
-  previously-red CLI stub specs fixed; added `todo.store.spec.ts` (13 behavioural
-  tests — the SignalStore had none). **25 suites / 37 tests green.**
-  See [[decisions]] #10.
-- **Commit conventions** (`b5f55e7`, 2026-09-02): `.claude/rules/conventional-commits.md`
-  + a "Commit conventions" section in `CLAUDE.md`. Conventional Commits 1.0.0, no
-  `commitlint`. See [[decisions]] #11.
-- **Merge to `main`** (2026-09-02): `feature/cva` fast-forwarded into `main`,
-  pushed, then the branch was deleted (local + remote). `main` is the only branch.
+Nothing in flight. This session (all committed + pushed on `main`):
+
+- **Jest migration** (`3bfa245`): Karma/Jasmine → Jest (`jest-preset-angular` 17).
+  `jest.config.js` + `setup-jest.ts`; rewrote `tsconfig.spec.json`; dropped the
+  `test` target from `angular.json`; removed `karma*` / `jasmine*` devDeps;
+  `npm test` → `jest`. Fixed the 12 red CLI stub specs; added `todo.store.spec.ts`
+  (13 behavioural tests). **25 suites / 37 tests green.** See [[decisions]] #10.
+- **Commit conventions** (`b5f55e7`): `.claude/rules/conventional-commits.md` +
+  "Commit conventions" in `CLAUDE.md`. Conventional Commits 1.0.0, no `commitlint`.
+  See [[decisions]] #11.
+- **Merge + cleanup** (`ed2666b`, `c5a8dac`): `feature/cva` → `main`, branch
+  deleted, memory bank updated to match.
+
+Earlier (pre-session, for context): Angular 19→21 upgrade chain, PrimeNG/@ngrx 21,
+`CLAUDE.md`/`README` refresh, agent tooling (`.mcp.json`, Serena), memory-bank +
+journal/decision logs, `/hello` + `/bye` commands.
 
 ## Open decisions
 

@@ -1,6 +1,6 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (feature/cva merged into main)_
+_Last updated: 2026-09-02 (Jest migration + merge to main)_
 
 ## Build / test status
 
@@ -37,9 +37,9 @@ _Last updated: 2026-09-02 (feature/cva merged into main)_
     `UserDetailPage` (its template needs a loaded user to build `userForm`).
   - Jest runs on any Node with no browser / `CHROME_BIN` — the old Karma Chromium
     setup is gone. Node 22.23.2 still preferred (`.nvmrc`), but not required for tests.
-- **Branch state:** `feature/cva` fast-forward-merged into `main` (`eb0a172..b5f55e7`,
-  2026-09-02); `main` == `feature/cva` == `origin/*`. `main` is on Angular 21 with
-  everything. See [[activeContext]] for the discarded stale local `main` commit.
+- **Branch state:** `feature/cva` fast-forward-merged into `main` then deleted
+  (2026-09-02). `main` (`c5a8dac`) == `origin/main` is the only branch — Angular 21
+  with everything. See [[activeContext]] for the discarded stale local `main` commit.
 
 ## Feature status
 
@@ -50,7 +50,7 @@ _Last updated: 2026-09-02 (feature/cva merged into main)_
 | `user` (detail) | single `signal<User\|null>` state service | Complete |
 | `invoice` | facade + `rxResource` + URL-backed query state | Complete |
 | `dynform` | Formly + PrimeNG, custom `repeat-table` type, `panel` wrapper, json-logic rules | Working; `form-one` is the demo page, has seen recent edits |
-| `cva` | signal-based `ControlValueAccessor` over PrimeNG inputNumber | Working; the branch's namesake, most recently iterated |
+| `cva` | signal-based `ControlValueAccessor` over PrimeNG inputNumber | Working; most recently iterated feature (the deleted `feature/cva` branch) |
 | `home` | landing page | Complete |
 
 ## Known issues / rough edges
@@ -68,8 +68,10 @@ _Last updated: 2026-09-02 (feature/cva merged into main)_
 
 ## What's left (if the project were to continue)
 
-- Decide git tracking for `.mcp.json` / `.serena/` / `.memory-bank/`.
-- Optionally add an `angular` LSP backend for Serena.
+- Optionally add an `angular` LSP backend for Serena ([[decisions]] #7).
+- Deepen the specs beyond "should create" for the non-`todo` patterns.
+- Optionally move the build off `@angular-devkit/build-angular` to `@angular/build`
+  to shed the transitive `karma` peer dep.
 - No functional feature work is pending — the repo is "done" as a reference; new
   work = new pattern folders.
 
