@@ -1,10 +1,3 @@
-
-@use "tailwindcss";
-
-.card-selection {
-  @apply w-[22rem] cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-lg
-}
-
 .p-card {
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
