@@ -1,28 +1,19 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (build cleanup — warnings silenced)_
+_Last updated: 2026-09-02 (chore/build-cleanup merged to main)_
 
 ## Current branch
 
-**`chore/build-cleanup`** off `main` (`86d435c`) — not pushed. Working tree:
-`package.json` / `package-lock.json` (drop `@angular/platform-browser-dynamic`),
-`angular.json` (`allowedCommonJsDependencies: ["json-logic-js"]` + initial
-`maximumWarning` 500 → 700 kB). `ng build` prod + dev now emit **zero warnings**;
-`npm test` 37/37. `main` == `origin/main`.
+**`main` only** — HEAD `e29c87f`, == `origin/main`. Working tree clean, nothing
+in flight. Both this-session branches (`fix/prod-build-budgets`,
+`chore/build-cleanup`) were ff-merged into `main` and deleted. New work → new
+branch off `main`.
 
-Prior: `fix/prod-build-budgets` was ff-merged into `main`, pushed, then deleted.
+`ng build` prod **and** dev now finish with **zero WARNING/ERROR lines**;
+`npm test` 25 suites / 37 tests green.
 
-`fix/prod-build-budgets` delivered (all on `main` now):
-1. `f95efa3` `fix(home)` — `home-page.component.scss` stops inlining Tailwind
-   (`@use` + `.card-selection` `@apply` removed, utilities moved to the template).
-2. `2a0681e` `perf(dynform)` — `provideFormlyCore([...])` moved from
-   `app.config.ts` to `dynform.routes.ts` `providers`. Initial bundle 1.27 MB →
-   672 kB. [[decisions]] #12.
-3. `8b988dc` `build(deps)` — `@angular-devkit/build-angular` → `@angular/build`
-   (drops the webpack/karma tree); `@angular/*` 21.2.20 → 21.2.22. [[decisions]] #13.
-   (+ `docs(memory-bank)` commits `fefe50b` / `10db9cc` / `e23564f` / `7befc84`.)
-
-`ng build` prod now **passes** (only the 500 kB initial `maximumWarning` left).
+⚠️ On a fresh clone use `npm ci` (a bare `npm install` from a wiped lock needs
+`--legacy-peer-deps` once — `@angular/build` optional peers; see [[techContext]]).
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during an earlier merge — its content was already in
@@ -31,13 +22,10 @@ validator config).
 
 ## In flight / recently done
 
-**In flight:** `chore/build-cleanup` — committed on the branch, not pushed.
-Zero-warning `ng build` (prod + dev) achieved.
+Nothing in flight.
 
-⚠️ On a fresh clone use `npm ci` (a bare `npm install` from a wiped lock needs
-`--legacy-peer-deps` once — `@angular/build` optional peers; see [[techContext]]).
-
-This session: scss budget fix, Formly → route (bundle 1.27 MB → 672 kB), build
+This session (all on `main` now): scss budget fix, Formly → route (bundle 1.27 MB →
+672 kB), build
 tooling → `@angular/build` (all merged to `main`), then build cleanup
 (`chore/build-cleanup`): warnings silenced, `platform-browser-dynamic` dropped.
 

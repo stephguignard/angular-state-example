@@ -32,8 +32,12 @@ bundle further down — it's a demo with PrimeNG + Formly.
 
 **Observed:** `ng build` (prod) and `ng build --configuration development` now
 finish with **no WARNING / ERROR lines at all**; `npm test` 25/37 green.
+Verified from a clean `rm -rf node_modules && npm ci`.
 
-**Next:** push / merge `chore/build-cleanup`.
+**Done (merge):** ff-merged `chore/build-cleanup` into `main` (`86d435c..e29c87f`),
+pushed `origin/main`, deleted the branch (was local-only — no remote to delete).
+
+**Next:** nothing pending for the build. `main` is the only branch again.
 
 ---
 
