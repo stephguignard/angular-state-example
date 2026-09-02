@@ -1,12 +1,15 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (build 100% clean — warnings silenced)_
+_Last updated: 2026-09-02 (Playwright smoke for dynform)_
 
 ## Build / test status
 
 - `ng build` (production) & `ng build --configuration development`: **PASS with
   ZERO warnings** as of 2026-09-02. `npm test` (`jest`): **25 suites / 37 tests
-  green**. History of how it got here:
+  green**. `npm run e2e` (Playwright): **1 spec green** — `dynform.e2e.ts` proves
+  `/dynform` renders with the route-level Formly config (all PrimeNG field types +
+  `repeat-table` + jsonLogic visibility), clean console. [[decisions]] #14.
+  Screenshot verified visually. History of how the build got clean:
   - Build tooling: **`@angular/build`** (`@angular-devkit/build-angular` removed,
     [[decisions]] #13; same esbuild `application` builder, identical output).
     `@angular/*` bumped `21.2.20 → 21.2.22` to align peers.

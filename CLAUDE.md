@@ -25,9 +25,11 @@ work session; at the end, update `activeContext.md` / `progress.md` (rewritten) 
 - `npm test` / `npx jest` — unit tests via **Jest** (`jest-preset-angular`, jsdom); single run by default
 - `npm run test:watch` — Jest in watch mode
 - `npx jest todo.service` — run specs matching a path fragment (Jest takes a filename regex, not a glob)
+- `npm run e2e` — Playwright smoke tests (`e2e/*.e2e.ts`); starts its own `ng serve`. One thin
+  spec today (`dynform.e2e.ts`); needs `npx playwright install chromium` once. **Not** a full e2e suite.
 - `ng generate component features/<feature>/... ` — scaffolding follows Angular CLI schematics (style: scss, per `angular.json`)
 
-There is no configured e2e runner, no lint script wired into `package.json`, and no Prettier/ESLint config present — don't assume `npm run lint` exists.
+There is no lint script wired into `package.json` and no Prettier/ESLint config present — don't assume `npm run lint` exists.
 
 ## Architecture
 

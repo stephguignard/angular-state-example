@@ -16,6 +16,38 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Playwright smoke test for /dynform
+**Done:** (branch `chore/dynform-smoke` off `main`)
+- Added `@playwright/test` + `playwright.config.ts` (runs its own `ng serve`,
+  `testDir: e2e`, `testMatch: **/*.e2e.ts`, chromium).
+- `e2e/dynform.e2e.ts`: loads `/dynform`, asserts every Formly field type
+  resolved to its PrimeNG component (input / select / checkbox / radio), the
+  custom `repeat-table` renders a `<table>`, the `panel` wrapper shows labels,
+  the `Valider` button is there, and the jsonLogic-hidden `textarea` appears
+  after checking the checkbox + picking Option 2 — all with a clean console.
+- `npm run e2e` script; `.gitignore` for `test-results/` / `playwright-report/`;
+  `jest.config.js` `testPathIgnorePatterns` gains `<rootDir>/e2e/`.
+- Docs: [[decisions]] #14, `CLAUDE.md` ("no e2e runner" → "thin smoke layer"),
+  [[techContext]], [[progress]].
+
+**Decided:** [[decisions]] #14 — Playwright as a *thin* smoke layer, deliberately
+one spec. The repo compares unit-level patterns; e2e stays a smoke check.
+
+**Observed:**
+- The route-level `provideFormlyCore` ([[decisions]] #12) is confirmed working in
+  a real browser — the earlier "not visually verified" caveat is closed. Screenshot
+  captured (`test-results/dynform.png`), sent to the user.
+- First run flagged two `p-select` on the page (the `select` field + one inside
+  the address panel) — used `.first()`. The jsonLogic `textarea` is fully removed
+  from the DOM when hidden (not just `display:none`), so assert `toHaveCount(0)`
+  then trigger the rule.
+- `npm i -D @playwright/test` resolved fine (no `--legacy-peer-deps` needed).
+  `npx playwright install chromium` → ~650 MB in `~/.cache/ms-playwright`.
+
+**Next:** push / merge `chore/dynform-smoke`.
+
+---
+
 ## 2026-09-02 — Build cleanup: zero-warning `ng build`
 **Done:** (branch `chore/build-cleanup` off `main`)
 - Removed `@angular/platform-browser-dynamic` from deps — unused (`main.ts`

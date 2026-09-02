@@ -1,19 +1,20 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (chore/build-cleanup merged to main)_
+_Last updated: 2026-09-02 (Playwright smoke for dynform)_
 
 ## Current branch
 
-**`main` only** — HEAD `e29c87f`, == `origin/main`. Working tree clean, nothing
-in flight. Both this-session branches (`fix/prod-build-budgets`,
-`chore/build-cleanup`) were ff-merged into `main` and deleted. New work → new
-branch off `main`.
+**`chore/dynform-smoke`** off `main` (`b66ebd3`) — not pushed. Adds `@playwright/test`
++ `e2e/dynform.e2e.ts` + `playwright.config.ts` + `npm run e2e` + `.gitignore` /
+`jest.config.js` (ignore `e2e/`) + doc updates. [[decisions]] #14. `npm run e2e`
+green; screenshot verified. `main` == `origin/main`.
 
-`ng build` prod **and** dev now finish with **zero WARNING/ERROR lines**;
-`npm test` 25 suites / 37 tests green.
+`ng build` prod **and** dev finish with **zero WARNING/ERROR lines**;
+`npm test` 25 suites / 37 tests green; `npm run e2e` 1 spec green.
 
 ⚠️ On a fresh clone use `npm ci` (a bare `npm install` from a wiped lock needs
 `--legacy-peer-deps` once — `@angular/build` optional peers; see [[techContext]]).
+For e2e: `npx playwright install chromium` once.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during an earlier merge — its content was already in
@@ -22,12 +23,12 @@ validator config).
 
 ## In flight / recently done
 
-Nothing in flight.
+**In flight:** `chore/dynform-smoke` — committed on the branch, not pushed.
 
-This session (all on `main` now): scss budget fix, Formly → route (bundle 1.27 MB →
-672 kB), build
-tooling → `@angular/build` (all merged to `main`), then build cleanup
-(`chore/build-cleanup`): warnings silenced, `platform-browser-dynamic` dropped.
+This session (all merged to `main`): scss budget fix; Formly → `dynform` route
+(bundle 1.27 MB → 672 kB); build tooling → `@angular/build`; build cleanup
+(warnings silenced, `platform-browser-dynamic` dropped). Then `chore/dynform-smoke`
+(Playwright smoke — pending merge).
 
 Earlier this day / pre-session (for context):
 

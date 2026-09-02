@@ -11,7 +11,7 @@
 | Forms | `@ngx-formly/core` + `@ngx-formly/primeng` 7, `json-logic-js` 2 |
 | Rx | `rxjs` ~7.8 |
 | Build | **`@angular/build`** (`:application` / `:dev-server` / `:extract-i18n` builders), `browser: src/main.ts`, out `dist/angular-state-example`. `@angular-devkit/build-angular` (+ its webpack/karma tree) removed — see [[decisions]] #13. |
-| Test | **Jest** 30 + `jest-preset-angular` 17 (jsdom, `setup-jest.ts`). Config: `jest.config.js`, `tsconfig.spec.json` (`types: [jest, node]`). No `test` target in `angular.json` — `@angular/build:unit-test` (Vitest) is available but unused. No e2e runner. |
+| Test | **Jest** 30 + `jest-preset-angular` 17 (jsdom, `setup-jest.ts`) for unit; `jest.config.js`, `tsconfig.spec.json` (`types: [jest, node]`); no `test` target in `angular.json` (`@angular/build:unit-test` / Vitest available, unused). **Playwright** `@playwright/test` for a thin e2e smoke layer (`e2e/*.e2e.ts`, `npm run e2e`, `playwright.config.ts`) — one spec (`dynform.e2e.ts`), jest ignores `e2e/`. |
 | TS | `typescript` ~5.9, `strict` + `strictTemplates` + `strictInjectionParameters` + `strictInputAccessModifiers` + `noPropertyAccessFromIndexSignature` |
 | Node | pinned in `.nvmrc` → **22.23.2** (nvm default alias also 22.23.2) |
 
@@ -22,12 +22,16 @@
 - `npm test` / `npx jest` → Jest, single run by default
 - `npm run test:watch` → Jest watch mode
 - `npx jest todo.service` → run specs matching a path fragment (regex, not glob)
+- `npm run e2e` → Playwright smoke (`e2e/*.e2e.ts`), starts its own `ng serve`;
+  `npx playwright install chromium` once (browsers live in `~/.cache/ms-playwright`,
+  ~650 MB, not in the repo). `test-results/` + `playwright-report/` are git-ignored.
 - `ng generate component features/<feature>/...` → CLI schematics, style: scss
 
 ## Not present (don't assume)
 
 - No `npm run lint`, no ESLint/Prettier config.
-- No e2e.
+- No *broad* e2e suite — Playwright is wired but holds a single smoke spec
+  (`dynform.e2e.ts`); the repo's point is unit-level pattern comparison.
 - No real HTTP backend — every repository is an in-memory mock with `delay(...)`.
 
 ## Dependency install gotcha

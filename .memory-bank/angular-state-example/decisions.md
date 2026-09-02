@@ -246,3 +246,27 @@ absent (would now be `@angular/build:unit-test`, Vitest — not adopted, [[decis
 `--legacy-peer-deps` once because npm tries to satisfy `@angular/build`'s optional
 peers (`@angular/localize`, `ng-packagr`); `npm ci` and lockfile-based
 `npm install` are clean. Documented in [[techContext]].
+
+---
+
+## 14. Playwright for a thin e2e smoke layer (not a broad suite)
+_Status: accepted (2026-09-02)_
+
+**Context.** Moving `provideFormlyCore` to the `dynform` route ([[decisions]] #12)
+could only be checked by build + a unit spec that supplies its own config — the
+"do route providers actually reach the lazy page" question had no automated
+coverage, and no browser tooling was available in-session to eyeball it.
+
+**Decision.** Add `@playwright/test` with **one** smoke spec, `e2e/dynform.e2e.ts`:
+loads `/dynform`, asserts every Formly field type resolved to its PrimeNG
+component + the custom `repeat-table` renders + the jsonLogic visibility rule
+fires, with a clean console. `playwright.config.ts` runs its own `ng serve`;
+specs are `*.e2e.ts` in `e2e/` so Jest (`*.spec.ts`, plus an `e2e/` ignore) never
+touches them. `npm run e2e`. This is **not** a commitment to broad e2e — the repo
+compares unit-level patterns; e2e stays a smoke check unless a feature needs more.
+
+**Consequences.** New `e2e/` dir + `playwright.config.ts` + `e2e` script.
+Browsers (`npx playwright install chromium`, ~650 MB) live in `~/.cache`, not the
+repo; `test-results/` + `playwright-report/` git-ignored. [[techContext]] /
+`CLAUDE.md` updated ("no e2e runner" → "thin smoke layer"). If e2e grows, split a
+`playwright/` project config per area and revisit.
