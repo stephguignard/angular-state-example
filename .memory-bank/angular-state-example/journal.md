@@ -25,11 +25,11 @@ Entry template:
 
 **Decided:** ff merge (branch history linear, `origin/main` a clean ancestor).
 
-**Observed:** `fix/prod-build-budgets` still exists local + `origin` — not deleted
-(no request); safe to delete since it's == `main`.
+**Observed:** `fix/prod-build-budgets` deleted (local + `origin`) after the ff
+merge — `main` is the only branch again.
 
-**Next:** delete the merged branch if wanted. Optional follow-ups unchanged
-(drop `@angular/platform-browser-dynamic`; deeper specs; Serena `angular` LSP).
+**Next:** optional follow-ups unchanged (drop `@angular/platform-browser-dynamic`;
+deeper specs for non-`todo` patterns; Serena `angular` LSP — [[decisions]] #7).
 
 ---
 

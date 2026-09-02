@@ -4,10 +4,9 @@ _Last updated: 2026-09-02 (fix/prod-build-budgets merged to main)_
 
 ## Current branch
 
-**`main`** — HEAD `7befc84`, == `origin/main`. Working tree clean, nothing in
-flight. `fix/prod-build-budgets` was fast-forwarded into `main` and pushed; the
-branch still exists (local + `origin`) — safe to delete. New work → new branch
-off `main`.
+**`main` only** — HEAD `8c605a7`, == `origin/main`. Working tree clean, nothing
+in flight. `fix/prod-build-budgets` was fast-forwarded into `main`, pushed, then
+deleted (local + `origin`). New work → new branch off `main`.
 
 `fix/prod-build-budgets` delivered (all on `main` now):
 1. `f95efa3` `fix(home)` — `home-page.component.scss` stops inlining Tailwind
