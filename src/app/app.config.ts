@@ -6,13 +6,6 @@ import {providePrimeNG} from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import {definePreset} from '@primeng/themes';
 import {provideHttpClient} from '@angular/common/http';
-import {provideFormlyCore} from '@ngx-formly/core';
-import {withFormlyPrimeNG} from '@ngx-formly/primeng';
-import {FormlyDatepickerModule} from '@ngx-formly/primeng/datepicker';
-import {
-  PanelFieldWrapperComponent
-} from './features/dynform/components/panel-field-wrapper/panel-field-wrapper.component';
-import {RepeatTableTypeComponent} from './features/dynform/components/repeat-table-type/repeat-table-type.component';
 
 // Définir un preset personnalisé en étendant Lara
 const CustomPreset = definePreset(Lara, {
@@ -50,23 +43,5 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
-    // ✅ Formly configuration
-    provideFormlyCore([
-      ...withFormlyPrimeNG(),
-      {
-        validationMessages: [
-          { name: 'required', message: 'This field is required' },
-        ],
-        wrappers:[
-          { name: 'panel',component: PanelFieldWrapperComponent},
-        ],
-        types:[
-          {
-            name: 'repeat-table',
-            component: RepeatTableTypeComponent,
-          }
-        ]
-      },
-    ]),
   ]
 };
