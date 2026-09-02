@@ -16,7 +16,6 @@
     "@angular/core": "^21.2.22",
     "@angular/forms": "^21.2.22",
     "@angular/platform-browser": "^21.2.22",
-    "@angular/platform-browser-dynamic": "^21.2.22",
     "@angular/router": "^21.2.22",
     "@ngrx/operators": "^21.1.1",
     "@ngrx/signals": "^21.1.1",
