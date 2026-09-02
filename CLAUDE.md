@@ -9,6 +9,14 @@ compare different Angular **state management** and **form-integration** patterns
 folder under `src/app/features/`. When asked to change or extend a feature, keep it consistent with the pattern
 that feature already demonstrates rather than "fixing" it to match another feature — the divergence is intentional.
 
+## Memory bank
+
+Longer-form project context lives in `.memory-bank/angular-state-example/` (Cline-style memory bank):
+`projectbrief`, `productContext`, `systemPatterns`, `techContext`, `activeContext`, `progress`, plus an
+append-only `journal.md` (dated work log) and `decisions.md` (ADR-style decision log). Read it at the start of a
+work session; at the end, update `activeContext.md` / `progress.md` (rewritten) and add a `journal.md` entry
+(newest first) — record any structural choice in `decisions.md`. Keep it consistent with this file.
+
 ## Commands
 
 - Node version is pinned in `.nvmrc` (currently 22.23.2) — run `nvm use` before installing/building.
