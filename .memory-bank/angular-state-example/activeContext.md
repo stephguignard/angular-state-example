@@ -1,12 +1,16 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (fix/prod-build-budgets merged to main)_
+_Last updated: 2026-09-02 (build cleanup — warnings silenced)_
 
 ## Current branch
 
-**`main` only** — HEAD `8c605a7`, == `origin/main`. Working tree clean, nothing
-in flight. `fix/prod-build-budgets` was fast-forwarded into `main`, pushed, then
-deleted (local + `origin`). New work → new branch off `main`.
+**`chore/build-cleanup`** off `main` (`86d435c`) — not pushed. Working tree:
+`package.json` / `package-lock.json` (drop `@angular/platform-browser-dynamic`),
+`angular.json` (`allowedCommonJsDependencies: ["json-logic-js"]` + initial
+`maximumWarning` 500 → 700 kB). `ng build` prod + dev now emit **zero warnings**;
+`npm test` 37/37. `main` == `origin/main`.
+
+Prior: `fix/prod-build-budgets` was ff-merged into `main`, pushed, then deleted.
 
 `fix/prod-build-budgets` delivered (all on `main` now):
 1. `f95efa3` `fix(home)` — `home-page.component.scss` stops inlining Tailwind
@@ -27,13 +31,15 @@ validator config).
 
 ## In flight / recently done
 
-Nothing in flight.
+**In flight:** `chore/build-cleanup` — committed on the branch, not pushed.
+Zero-warning `ng build` (prod + dev) achieved.
 
 ⚠️ On a fresh clone use `npm ci` (a bare `npm install` from a wiped lock needs
 `--legacy-peer-deps` once — `@angular/build` optional peers; see [[techContext]]).
 
-This session (all on `main`): scss budget fix, Formly → route (bundle 1.27 MB →
-672 kB), build tooling `@angular-devkit/build-angular` → `@angular/build`.
+This session: scss budget fix, Formly → route (bundle 1.27 MB → 672 kB), build
+tooling → `@angular/build` (all merged to `main`), then build cleanup
+(`chore/build-cleanup`): warnings silenced, `platform-browser-dynamic` dropped.
 
 Earlier this day / pre-session (for context):
 

@@ -1,30 +1,28 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (scss + bundle budgets fixed; build → @angular/build)_
+_Last updated: 2026-09-02 (build 100% clean — warnings silenced)_
 
 ## Build / test status
 
-- Build tooling: **`@angular/build`** (`@angular-devkit/build-angular` removed,
-  [[decisions]] #13). `ng build` / `ng serve` unchanged in behaviour (same esbuild
-  `application` builder). Angular framework bumped `21.2.20 → 21.2.22` to align
-  peers. Verified 2026-09-02: prod build, dev build, `ng serve` (200 on `/` and
-  `/main.js`), `npm test` 37/37 — all green.
-- `ng build` (production, = default config): **PASSES** as of 2026-09-02
-  (all on `main`, `7befc84`). Only non-fatal warnings remain:
-  - ~~`✘ initial bundle 1.27 MB` > 1 MB error budget~~ **FIXED** — moved
-    `provideFormlyCore([...withFormlyPrimeNG(), {...}])` out of `app.config.ts`
-    into the `dynform` route's `providers` ([[decisions]] #12). Initial bundle
-    **1.27 MB → 672 kB raw / 278 kB → 162 kB transfer**. The 500 kB
-    `maximumWarning` still fires (⚠ only, build succeeds); bump it in
-    `angular.json` if a fully-silent build is wanted.
-  - ~~`home-page.component.scss` `anyComponentStyle` budget~~ **FIXED**
-    (`fix/prod-build-budgets`): removed `@use "tailwindcss";` + the `.card-selection`
-    `@apply` class from the component scss; moved those utilities inline onto the
-    `<p-card>` tags in `home-page.component.html`. The scss now holds only plain
-    `.p-card` CSS. Tailwind is once again global-only (`src/tailwind.css`).
-  - Non-blocking warning: `json-logic-js` is CommonJS, not ESM
-    (optimization bailout) in `form-one.component.ts`.
-  - `ng build --configuration development` builds clean (no budgets).
+- `ng build` (production) & `ng build --configuration development`: **PASS with
+  ZERO warnings** as of 2026-09-02. `npm test` (`jest`): **25 suites / 37 tests
+  green**. History of how it got here:
+  - Build tooling: **`@angular/build`** (`@angular-devkit/build-angular` removed,
+    [[decisions]] #13; same esbuild `application` builder, identical output).
+    `@angular/*` bumped `21.2.20 → 21.2.22` to align peers.
+  - ~~`✘ initial bundle 1.27 MB` > 1 MB error budget~~ **FIXED** — `provideFormlyCore`
+    moved from `app.config.ts` to the `dynform` route ([[decisions]] #12): initial
+    bundle **1.27 MB → 672 kB raw / 162 kB transfer**.
+  - ~~`home-page.component.scss` `anyComponentStyle` budget~~ **FIXED** — removed
+    `@use "tailwindcss";` + `.card-selection` `@apply`, utilities moved inline onto
+    the `<p-card>` tags. Tailwind global-only again.
+  - ~~`json-logic-js` CommonJS optimization-bailout warning~~ **silenced** —
+    `"allowedCommonJsDependencies": ["json-logic-js"]` in `angular.json` build
+    options (it's a legit CJS-only lib).
+  - ~~500 kB initial `maximumWarning`~~ **raised to 700 kB** (bundle is 672 kB;
+    `maximumError` stays 1 MB).
+  - `@angular/platform-browser-dynamic` removed from deps (unused — `main.ts`
+    bootstraps via `@angular/platform-browser`; npm flagged it deprecated).
 - `npm test` (= `jest`, run 2026-09-02, Node 22.23.2): **25 suites / 37 tests,
   all green.** Test stack migrated Karma/Jasmine → **Jest** (`jest-preset-angular`
   17, jsdom, zone setup via `setup-jest.ts`). See [[decisions]] #10.
@@ -80,8 +78,6 @@ _Last updated: 2026-09-02 (scss + bundle budgets fixed; build → @angular/build
 
 - Optionally add an `angular` LSP backend for Serena ([[decisions]] #7).
 - Deepen the specs beyond "should create" for the non-`todo` patterns.
-- `@angular/platform-browser-dynamic` is now flagged deprecated by npm (use
-  `@angular/platform-browser`) — still listed in deps; harmless, could be dropped.
 - No functional feature work is pending — the repo is "done" as a reference; new
   work = new pattern folders.
 
