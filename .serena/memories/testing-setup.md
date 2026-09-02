@@ -36,7 +36,10 @@ rationale; this memory only records the non-obvious gotchas.
   - `UserDetailPageComponent` template needs a loaded user (`[formGroup]` built in
     an `effect()`) → its spec stubs `ActivatedRoute` with `{ id: '1' }`.
   - Formly specs need the full `provideFormlyCore([...withFormlyPrimeNG(), {...}])`
-    config mirrored from `app.config.ts`.
+    config in `TestBed` `providers`. Since 2026-09-02 the app registers this on the
+    `dynform` **route** (`dynform.routes.ts`), not in `app.config.ts` (bundle-size
+    fix, decisions.md #12) — specs still declare their own copy, unchanged.
+    `form-one.component.spec.ts` is the template to copy.
 - NgRx SignalStore specs: provide `TodoStore` in `providers`, mock `TodoService`
   with `jest.fn()`, use `fakeAsync` + `tick(300)` for the `debounceTime(300)` in
   `loadByQuery` (see `todo/store/todo.store.spec.ts`).

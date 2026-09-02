@@ -67,9 +67,11 @@
 ### `features/dynform` — dynamic forms (Formly + PrimeNG)
 - `@ngx-formly/core` + `@ngx-formly/primeng`.
 - Custom field type `repeat-table` (`components/repeat-table-type/`), custom
-  wrapper `panel` (`components/panel-field-wrapper/`) — both registered globally
-  in `app.config.ts` via `provideFormlyCore([...withFormlyPrimeNG(), {...}])`,
-  NOT per feature.
+  wrapper `panel` (`components/panel-field-wrapper/`) — registered in the
+  **`dynform` route's `providers`** (`dynform.routes.ts`) via
+  `provideFormlyCore([...withFormlyPrimeNG(), {...}])`, NOT in `app.config.ts`
+  (keeps Formly + its PrimeNG field components out of the initial bundle — see
+  [[decisions]] #12).
 - `utils/FormlyFieldWithLogic.ts`: extends `FormlyFieldConfig` with
   `x-jsonLogic-visibility` / `x-jsonLogic-validator`; `json-logic-js` rules drive
   conditional visibility/validation declaratively instead of imperative code.

@@ -75,9 +75,12 @@ features/<name>/
 
 ### Formly + PrimeNG wiring
 
-Formly's global config (validation messages, the `panel` wrapper, the `repeat-table` type) is registered once in
-`app.config.ts` via `provideFormlyCore([...withFormlyPrimeNG(), {...}])`. New Formly field types/wrappers should be
-registered there, not per-feature.
+Formly's config (validation messages, `...withFormlyPrimeNG()`, the `panel` wrapper, the `repeat-table` type) is
+registered once via `provideFormlyCore([...])` in the **`dynform` route's `providers`** (`dynform.routes.ts`), not
+in `app.config.ts` — that keeps Formly + its PrimeNG field components (input/select/checkbox/radio/textarea) out of
+the initial bundle, since `dynform` is the only feature using Formly. New Formly field types/wrappers go in that
+same route-level `provideFormlyCore` call. Component specs that render a Formly form still provide their own
+`provideFormlyCore([...withFormlyPrimeNG(), {...}])` in `TestBed` (there is no global test config).
 
 ### PrimeNG theming
 

@@ -16,6 +16,38 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Fix the initial-bundle budget (move Formly off app.config)
+**Done:**
+- Diagnosed the 1.27 MB initial bundle with `source-map-explorer`: PrimeNG ~513 kB,
+  most of it dragged in eagerly by `withFormlyPrimeNG()` in `app.config.ts`
+  (input/textarea/radio/checkbox/select field components).
+- Moved the whole `provideFormlyCore([...withFormlyPrimeNG(), {...}])` call into
+  the `dynform` route's `providers` (`dynform.routes.ts`). `app.config.ts` now
+  only has router / http / PrimeNG theme; dropped the dead `FormlyDatepickerModule`
+  import.
+- Updated `CLAUDE.md` ("Formly + PrimeNG wiring"), `systemPatterns`, and added
+  [[decisions]] #12.
+- On branch `fix/home-scss-budget` (same branch as the scss fix).
+
+**Decided:** [[decisions]] #12 — Formly config is route-scoped, not global. Revises
+the old "register once in app.config.ts" rule. Rationale: `dynform` is the only
+Formly consumer; no reason to tax every other route.
+
+**Observed:**
+- Initial bundle **1.27 MB → 672 kB raw**, **278 kB → 162 kB transfer**.
+  `ng build` prod now **passes** (only the 500 kB `maximumWarning` left).
+- `npm test` still 25 suites / 37 tests green — `FormOneComponent` spec already
+  provides its own `provideFormlyCore` in `TestBed`, unaffected.
+- Dev server: `/dynform` returns HTTP 200. No browser tooling available this
+  session, so not visually confirmed — the FormOne spec's `detectChanges()` does
+  render the full form (input/checkbox/select/repeat-table) and passes.
+
+**Next:** push / merge `fix/home-scss-budget`. Optional: bump the 500 kB
+`maximumWarning` in `angular.json` for a warning-free build; browser-check
+`/dynform` when tooling is back.
+
+---
+
 ## 2026-09-02 — Fix home-page scss budget
 **Done:**
 - `home-page.component.scss`: removed `@use "tailwindcss";` and the

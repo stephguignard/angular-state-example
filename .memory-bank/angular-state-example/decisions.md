@@ -191,3 +191,30 @@ authors and by Claude Code reading the rules file, not machine-enforced. Use
 rules (loaded via the `CLAUDE.md` reference, not auto-discovered). Old commits
 keep their non-conforming messages — history is not rewritten. If drift returns,
 revisit and add `commitlint` (would supersede this entry).
+
+---
+
+## 12. Formly config lives on the `dynform` route, not in `app.config.ts`
+_Status: accepted (2026-09-02) — revises the "register once globally" guidance_
+
+**Context.** `provideFormlyCore([...withFormlyPrimeNG(), {...}])` sat in
+`app.config.ts`, so `@ngx-formly/core` + `@ngx-formly/primeng` and the PrimeNG
+field components it wires (input, textarea, radio, checkbox, **select** — the
+last pulls overlay/scroller) were all in the **initial** bundle. `dynform` is the
+only feature that uses Formly. Initial bundle was 1.27 MB raw / 278 kB transfer —
+over the 1 MB `maximumError` budget in `angular.json`.
+
+**Decision.** Move the whole `provideFormlyCore([...])` call into the `dynform`
+route's `providers` (`dynform.routes.ts`). Route-level env providers are visible
+to the lazily-loaded `FormOneComponent`; the config is scoped to `/dynform`.
+`app.config.ts` keeps only router / http / PrimeNG theme. Also dropped the unused
+`FormlyDatepickerModule` import there.
+
+**Consequences.** Initial bundle → **672 kB raw / 162 kB transfer**; `ng build`
+prod passes (only the 500 kB `maximumWarning` remains, non-fatal). Formly + its
+PrimeNG components now load with the `dynform` chunk. New Formly types/wrappers go
+in `dynform.routes.ts`, not `app.config.ts` — [[systemPatterns]] and `CLAUDE.md`
+updated. Component specs still declare their own `provideFormlyCore` in `TestBed`
+(unchanged — no global test config). If a second feature ever needs Formly,
+promote the call to a shared `provideFormly…()` helper or back to `app.config.ts`
+and re-measure.

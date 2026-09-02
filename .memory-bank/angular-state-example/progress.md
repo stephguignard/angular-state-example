@@ -1,19 +1,23 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (fix home-page scss budget)_
+_Last updated: 2026-09-02 (scss + bundle budgets fixed)_
 
 ## Build / test status
 
-- `ng build` (production, = default config): **FAILS on the initial-bundle budget
-  only** (compilation + bundling succeed). Run 2026-09-02:
-  - `✘ initial bundle 1.27 MB` > 1 MB error budget (PrimeNG + Tailwind + Formly).
-    Still open — bump the `initial` budget in `angular.json` or accept it (demo).
+- `ng build` (production, = default config): **PASSES** as of 2026-09-02
+  (branch `fix/home-scss-budget`). Only non-fatal warnings remain:
+  - ~~`✘ initial bundle 1.27 MB` > 1 MB error budget~~ **FIXED** — moved
+    `provideFormlyCore([...withFormlyPrimeNG(), {...}])` out of `app.config.ts`
+    into the `dynform` route's `providers` ([[decisions]] #12). Initial bundle
+    **1.27 MB → 672 kB raw / 278 kB → 162 kB transfer**. The 500 kB
+    `maximumWarning` still fires (⚠ only, build succeeds); bump it in
+    `angular.json` if a fully-silent build is wanted.
   - ~~`home-page.component.scss` `anyComponentStyle` budget~~ **FIXED**
     (`fix/home-scss-budget`): removed `@use "tailwindcss";` + the `.card-selection`
     `@apply` class from the component scss; moved those utilities inline onto the
     `<p-card>` tags in `home-page.component.html`. The scss now holds only plain
     `.p-card` CSS. Tailwind is once again global-only (`src/tailwind.css`).
-  - Also a non-blocking warning: `json-logic-js` is CommonJS, not ESM
+  - Non-blocking warning: `json-logic-js` is CommonJS, not ESM
     (optimization bailout) in `form-one.component.ts`.
   - `ng build --configuration development` builds clean (no budgets).
 - `npm test` (= `jest`, run 2026-09-02, Node 22.23.2): **25 suites / 37 tests,
