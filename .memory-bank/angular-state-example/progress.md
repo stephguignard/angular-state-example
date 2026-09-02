@@ -46,9 +46,10 @@ _Last updated: 2026-09-02 (Playwright smoke for dynform)_
     `UserDetailPage` (its template needs a loaded user to build `userForm`).
   - Jest runs on any Node with no browser / `CHROME_BIN` — the old Karma Chromium
     setup is gone. Node 22.23.2 still preferred (`.nvmrc`), but not required for tests.
-- **Branch state:** `feature/cva` fast-forward-merged into `main` then deleted
-  (2026-09-02). `main` (`c5a8dac`) == `origin/main` is the only branch — Angular 21
-  with everything. See [[activeContext]] for the discarded stale local `main` commit.
+- **Branch state:** `main` (`f25dd3d`) == `origin/main` is the only branch. All
+  2026-09-02 work (Angular 21 chain, Jest, commit rules, `feature/cva` merge, then
+  this session's budget/build/e2e work) is on it. See [[activeContext]] for the
+  discarded stale local `main` commit.
 
 ## Feature status
 
@@ -58,15 +59,15 @@ _Last updated: 2026-09-02 (Playwright smoke for dynform)_
 | `user` | hand-rolled signals + `effect()` **and** `rxResource`, in parallel | Both complete; keep them in sync when changing the shared use case |
 | `user` (detail) | single `signal<User\|null>` state service | Complete |
 | `invoice` | facade + `rxResource` + URL-backed query state | Complete |
-| `dynform` | Formly + PrimeNG, custom `repeat-table` type, `panel` wrapper, json-logic rules | Working; `form-one` is the demo page, has seen recent edits |
-| `cva` | signal-based `ControlValueAccessor` over PrimeNG inputNumber | Working; most recently iterated feature (the deleted `feature/cva` branch) |
+| `dynform` | Formly + PrimeNG, custom `repeat-table` type, `panel` wrapper, json-logic rules | Working; `form-one` is the demo page. Formly config now on the route ([[decisions]] #12). Has a Playwright smoke test (`e2e/dynform.e2e.ts`, #14). |
+| `cva` | signal-based `ControlValueAccessor` over PrimeNG inputNumber | Working; iterated on the (since-deleted) `feature/cva` branch |
 | `home` | landing page | Complete |
 
 ## Known issues / rough edges
 
 - Most unit specs are still only "should create" smoke tests (green). `todo.store`
-  now has real behavioural coverage; the other patterns (user search services,
-  invoice facade, cva) would benefit from the same treatment.
+  has real behavioural coverage; `dynform` has a Playwright smoke test; the other
+  patterns (user search services, invoice facade, cva) would benefit from the same.
 - ~~`karma` / webpack pulled transitively by `@angular-devkit/build-angular`~~
   **resolved** — migrated to `@angular/build` ([[decisions]] #13); no webpack /
   `@ngtools` / `karma-source-map-support` in `node_modules` anymore.

@@ -46,6 +46,13 @@ rationale; this memory only records the non-obvious gotchas.
   with `jest.fn()`, use `fakeAsync` + `tick(300)` for the `debounceTime(300)` in
   `loadByQuery` (see `todo/store/todo.store.spec.ts`).
 
+## e2e (separate from Jest)
+- Playwright (`@playwright/test`), one smoke spec: `e2e/dynform.e2e.ts`.
+  `npm run e2e` (starts its own `ng serve`). Config: `playwright.config.ts`
+  (`testMatch: **/*.e2e.ts`). Jest ignores `e2e/` (`testPathIgnorePatterns`).
+- Needs `npx playwright install chromium` once (browsers in `~/.cache/ms-playwright`).
+- Not a broad suite — see `.memory-bank/.../decisions.md` #14.
+
 ## Leftovers
 - `@angular-devkit/build-angular` (and its webpack + `karma-source-map-support`
   deps) was removed 2026-09-02 — build is now `@angular/build`. `node_modules`

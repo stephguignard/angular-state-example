@@ -4,10 +4,11 @@ _Last updated: 2026-09-02 (chore/dynform-smoke merged to main)_
 
 ## Current branch
 
-**`main` only** — HEAD `5f1c2cc`, == `origin/main`. Working tree clean, nothing in
-flight. All four this-session branches were ff-merged into `main` and deleted
-(local-only from `chore/build-cleanup` on — never pushed as branches). New work →
-new branch off `main`.
+**`main` only** — HEAD `f25dd3d`, == `origin/main`. Working tree clean, nothing in
+flight. All three this-session branches (`fix/prod-build-budgets`,
+`chore/build-cleanup`, `chore/dynform-smoke`) were ff-merged into `main` and
+deleted — only the first was ever pushed as a branch. New work → new branch off
+`main`.
 
 `ng build` prod **and** dev finish with **zero WARNING/ERROR lines**;
 `npm test` 25 suites / 37 tests green; `npm run e2e` 1 spec green.
@@ -63,8 +64,15 @@ journal/decision logs, `/hello` + `/bye` commands.
   breaks if that Node version is removed.
 - `ng build` here needs Node 22.23.2 on PATH. Tests (`npm test` / `jest`) run on
   any Node, no browser / `CHROME_BIN` needed since the Jest migration.
+- **Deps:** `npm ci` / lockfile `npm install` are clean; a from-scratch re-resolve
+  (`rm package-lock.json`, `npm install <pkg>`) needs `--legacy-peer-deps` once
+  (`@angular/build` optional peers). See [[techContext]] + [[decisions]] #13.
+- **e2e:** `npm run e2e` (Playwright) needs `npx playwright install chromium` once;
+  it's a single smoke spec, not a suite ([[decisions]] #14).
 - When editing a feature, keep its pattern — see [[systemPatterns]]. The `user`
   feature has two search services that usually both need the change.
+- Formly config lives on the **`dynform` route** (`dynform.routes.ts`), not
+  `app.config.ts` — new field types/wrappers go there ([[decisions]] #12).
 
 ## Related
 

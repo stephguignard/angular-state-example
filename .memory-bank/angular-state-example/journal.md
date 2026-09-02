@@ -16,6 +16,33 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Session close (build/bundle hardening)
+**Done:** one long session, all landed on `main` (`f25dd3d` == `origin/main`):
+- `fix(home)` — stop `home-page.component.scss` inlining Tailwind per-component.
+- `perf(dynform)` — Formly config moved to the route: initial bundle 1.27 MB →
+  672 kB. [[decisions]] #12.
+- `build(deps)` — `@angular-devkit/build-angular` → `@angular/build` (drop the
+  webpack/karma tree, `package-lock` ~7k lines smaller); `@angular/*` 21.2.20 →
+  21.2.22. [[decisions]] #13.
+- `build` — `allowedCommonJsDependencies: [json-logic-js]` + initial
+  `maximumWarning` 500 → 700 kB + drop unused `@angular/platform-browser-dynamic`.
+  `ng build` (prod + dev) now emits **zero WARNING/ERROR lines**.
+- `test(dynform)` — Playwright smoke (`e2e/dynform.e2e.ts`, `npm run e2e`).
+  [[decisions]] #14.
+Each change went on its own branch, ff-merged, branch deleted. Memory-bank kept
+in step throughout.
+
+**Decided:** [[decisions]] #12, #13, #14 (see there).
+
+**Observed:** `npm test` 25/37 green · `npm run e2e` 1/1 · build clean, verified
+from a fresh `rm -rf node_modules && npm ci`. The `provideFormlyCore`-on-the-route
+question is now covered in a real browser (screenshot sent to user).
+
+**Next:** deeper unit specs for `user` / `invoice` / `cva`; Serena `angular` LSP
+([[decisions]] #7, still `proposed`). No functional work pending.
+
+---
+
 ## 2026-09-02 — Playwright smoke test for /dynform
 **Done:** (branch `chore/dynform-smoke` off `main`)
 - Added `@playwright/test` + `playwright.config.ts` (runs its own `ng serve`,
