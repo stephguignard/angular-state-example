@@ -1,12 +1,13 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (Jest + commit rules + feature/cva merged & deleted)_
+_Last updated: 2026-09-02 (fix home-page scss budget)_
 
 ## Current branch
 
-**`main` only** — HEAD `c5a8dac`, == `origin/main`. Working tree clean, nothing
-in flight. `feature/cva` was fast-forwarded into `main` then deleted (local +
-remote); new work → new branch off `main`.
+**`fix/home-scss-budget`** off `main` (`0ef8614`) — one commit: drop
+`@use "tailwindcss"` / `.card-selection` `@apply` from `home-page.component.scss`,
+move the utilities inline onto the `<p-card>` tags. Not pushed / not merged yet.
+`main` == `origin/main`. New unrelated work → new branch off `main`.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during the merge — its content was already in the
@@ -15,7 +16,11 @@ validator config).
 
 ## In flight / recently done
 
-Nothing in flight. This session (all committed + pushed on `main`):
+**In flight:** `fix/home-scss-budget` — committed locally, awaiting push/merge
+decision. `ng build` prod: the `anyComponentStyle` error is gone; only the
+`initial` 1 MB bundle budget still errors (pre-existing, PrimeNG+Tailwind+Formly).
+
+Previous session (all committed + pushed on `main`):
 
 - **Jest migration** (`3bfa245`): Karma/Jasmine → Jest (`jest-preset-angular` 17).
   `jest.config.js` + `setup-jest.ts`; rewrote `tsconfig.spec.json`; dropped the

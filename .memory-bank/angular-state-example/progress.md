@@ -1,22 +1,21 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (Jest migration + merge to main)_
+_Last updated: 2026-09-02 (fix home-page scss budget)_
 
 ## Build / test status
 
-- `ng build` (production, = default config): **FAILS on budget errors only**
-  (compilation + bundling succeed). Run 2026-09-02:
+- `ng build` (production, = default config): **FAILS on the initial-bundle budget
+  only** (compilation + bundling succeed). Run 2026-09-02:
   - `✘ initial bundle 1.27 MB` > 1 MB error budget (PrimeNG + Tailwind + Formly).
-  - `✘ home-page.component.scss 19.33 kB` > 8 kB `anyComponentStyle` budget —
-    **root cause: `@use "tailwindcss";` inside the component scss** (305 B of
-    source) inlines Tailwind per-component. Tailwind belongs only in the global
-    `src/tailwind.css`; this `@use` should be removed.
+    Still open — bump the `initial` budget in `angular.json` or accept it (demo).
+  - ~~`home-page.component.scss` `anyComponentStyle` budget~~ **FIXED**
+    (`fix/home-scss-budget`): removed `@use "tailwindcss";` + the `.card-selection`
+    `@apply` class from the component scss; moved those utilities inline onto the
+    `<p-card>` tags in `home-page.component.html`. The scss now holds only plain
+    `.p-card` CSS. Tailwind is once again global-only (`src/tailwind.css`).
   - Also a non-blocking warning: `json-logic-js` is CommonJS, not ESM
     (optimization bailout) in `form-one.component.ts`.
   - `ng build --configuration development` builds clean (no budgets).
-  - Fixes if desired: drop the `@use "tailwindcss"` line in
-    `home-page.component.scss`; bump the `initial` budget in `angular.json`
-    (or accept it — it's a demo). Not done (not requested).
 - `npm test` (= `jest`, run 2026-09-02, Node 22.23.2): **25 suites / 37 tests,
   all green.** Test stack migrated Karma/Jasmine → **Jest** (`jest-preset-angular`
   17, jsdom, zone setup via `setup-jest.ts`). See [[decisions]] #10.

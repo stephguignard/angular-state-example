@@ -16,6 +16,29 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Fix home-page scss budget
+**Done:**
+- `home-page.component.scss`: removed `@use "tailwindcss";` and the
+  `.card-selection { @apply … }` class. File now holds only plain `.p-card` CSS.
+- `home-page.component.html`: the 3 `class="card-selection"` on `<p-card>` replaced
+  by the utilities inline (`w-[22rem] cursor-pointer transform transition
+  duration-300 hover:scale-105 hover:shadow-lg`).
+- Committed on branch `fix/home-scss-budget` off `main` (`0ef8614`).
+
+**Decided:** template utilities over `@apply` in component scss — see [[decisions]]
+#3 (updated). No new ADR.
+
+**Observed:**
+- `ng build` prod: the `anyComponentStyle` budget error on
+  `home-page.component.scss` is gone. The `initial` bundle 1 MB budget still
+  errors (269 kB over) — untouched, pre-existing, separate concern.
+- `npx jest home-page` green (spec is just "should create").
+
+**Next:** decide push/merge of `fix/home-scss-budget`. Optionally bump the
+`initial` budget in `angular.json` for a fully-green prod build.
+
+---
+
 ## 2026-09-02 — Delete feature/cva + session close
 **Done:**
 - Deleted `feature/cva` local + remote (`git branch -d` accepted — fully merged).

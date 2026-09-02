@@ -50,8 +50,10 @@ no `tailwind.config.js`, entrypoint `src/tailwind.css` (`@import "tailwindcss"`
 `theme, base, primeng`.
 
 **Consequences.** Two styling systems in play — intentional. ⚠️ `@use "tailwindcss"`
-must NOT appear in component `.scss` (it inlines Tailwind per-component — this is
-why `home-page.component.scss` blows the `anyComponentStyle` budget). See
+must NOT appear in component `.scss` (it inlines Tailwind per-component). This once
+blew `home-page.component.scss` past the `anyComponentStyle` budget — fixed
+2026-09-02 by moving the utilities inline into the template (`fix/home-scss-budget`);
+use `class="…"` utilities in the template, not `@apply` in component scss. See
 [[progress]].
 
 ---
