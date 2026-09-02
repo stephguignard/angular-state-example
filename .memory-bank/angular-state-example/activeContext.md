@@ -1,19 +1,19 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (feature/cva merged into main)_
+_Last updated: 2026-09-02 (feature/cva merged into main + deleted)_
 
 ## Current branch
 
-**`main` and `feature/cva` are now the same commit** (`b5f55e7`), both pushed.
-`feature/cva` was fast-forward-merged into `main` (`eb0a172..b5f55e7`) — `main`
-now carries the full Angular 19 → 21 upgrade chain, the Jest migration, the
-memory bank and the commit rules. Working tree clean, nothing in flight.
+**`main` only** — HEAD `ed2666b`, pushed. `feature/cva` was fast-forward-merged
+into `main` (`eb0a172..b5f55e7`) then deleted (local + remote). `main` carries the
+full Angular 19 → 21 upgrade chain, the Jest migration, the memory bank and the
+commit rules. Working tree clean, nothing in flight. New work → new branch off
+`main`.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during the merge — its content was already present
-in `feature/cva` HEAD (verified: the `[dt]` inputNumber binding + `updateOn:
-'blur'` validator config). `feature/cva` can be kept as the working branch or
-deleted; new work → new branch off `main`.
+in the merged history (verified: the `[dt]` inputNumber binding + `updateOn:
+'blur'` validator config).
 
 ## In flight / recently done
 
@@ -36,8 +36,8 @@ deleted; new work → new branch off `main`.
 - **Commit conventions** (`b5f55e7`, 2026-09-02): `.claude/rules/conventional-commits.md`
   + a "Commit conventions" section in `CLAUDE.md`. Conventional Commits 1.0.0, no
   `commitlint`. See [[decisions]] #11.
-- **Merge to `main`** (2026-09-02): `feature/cva` fast-forwarded into `main` and
-  pushed; the two branches are level.
+- **Merge to `main`** (2026-09-02): `feature/cva` fast-forwarded into `main`,
+  pushed, then the branch was deleted (local + remote). `main` is the only branch.
 
 ## Open decisions
 
