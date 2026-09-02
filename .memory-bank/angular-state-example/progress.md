@@ -1,9 +1,14 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (scss + bundle budgets fixed)_
+_Last updated: 2026-09-02 (scss + bundle budgets fixed; build → @angular/build)_
 
 ## Build / test status
 
+- Build tooling: **`@angular/build`** (`@angular-devkit/build-angular` removed,
+  [[decisions]] #13). `ng build` / `ng serve` unchanged in behaviour (same esbuild
+  `application` builder). Angular framework bumped `21.2.20 → 21.2.22` to align
+  peers. Verified 2026-09-02: prod build, dev build, `ng serve` (200 on `/` and
+  `/main.js`), `npm test` 37/37 — all green.
 - `ng build` (production, = default config): **PASSES** as of 2026-09-02
   (branch `fix/prod-build-budgets`). Only non-fatal warnings remain:
   - ~~`✘ initial bundle 1.27 MB` > 1 MB error budget~~ **FIXED** — moved
@@ -61,9 +66,11 @@ _Last updated: 2026-09-02 (scss + bundle budgets fixed)_
 - Most unit specs are still only "should create" smoke tests (green). `todo.store`
   now has real behavioural coverage; the other patterns (user search services,
   invoice facade, cva) would benefit from the same treatment.
-- `karma` / `karma-source-map-support` may still appear under `node_modules/` —
-  they are auto-installed *optional peer deps* of `@angular-devkit/build-angular`,
-  not project deps, and are unused.
+- ~~`karma` / webpack pulled transitively by `@angular-devkit/build-angular`~~
+  **resolved** — migrated to `@angular/build` ([[decisions]] #13); no webpack /
+  `@ngtools` / `karma-source-map-support` in `node_modules` anymore.
+- `npm install` from scratch needs `--legacy-peer-deps` once (`@angular/build`
+  optional peers) — see [[techContext]] "Dependency install gotcha".
 - `user-search-rx-resource-state.service.ts` has a `clearError()` stub that does
   nothing (resource owns the error) — intentional, left as a comparison note.
 - `todo.store.ts` `addTodo` uses `Date.now()` as id and pushes optimistically.
@@ -73,8 +80,8 @@ _Last updated: 2026-09-02 (scss + bundle budgets fixed)_
 
 - Optionally add an `angular` LSP backend for Serena ([[decisions]] #7).
 - Deepen the specs beyond "should create" for the non-`todo` patterns.
-- Optionally move the build off `@angular-devkit/build-angular` to `@angular/build`
-  to shed the transitive `karma` peer dep.
+- `@angular/platform-browser-dynamic` is now flagged deprecated by npm (use
+  `@angular/platform-browser`) — still listed in deps; harmless, could be dropped.
 - No functional feature work is pending — the repo is "done" as a reference; new
   work = new pattern folders.
 

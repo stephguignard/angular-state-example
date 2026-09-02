@@ -20,7 +20,9 @@ rationale; this memory only records the non-obvious gotchas.
   self-initialises → error "Need to call TestBed.initTestEnvironment() first".
 - `tsconfig.spec.json` — `module: CommonJS`, `moduleResolution: node`,
   `types: [jest, node]`, includes `setup-jest.ts`.
-- `angular.json` has **no `test` target** — `ng test` does not work.
+- `angular.json` has **no `test` target** — `ng test` does not work. (Since
+  2026-09-02 the build is on `@angular/build`, so the available runner would be
+  `@angular/build:unit-test` / Vitest — not adopted; Jest stays.)
 
 ## Writing specs
 - ts-jest runs transpile-only (`isolatedModules: true` in base tsconfig) → **type
@@ -45,7 +47,8 @@ rationale; this memory only records the non-obvious gotchas.
   `loadByQuery` (see `todo/store/todo.store.spec.ts`).
 
 ## Leftovers
-- `karma` / `karma-source-map-support` may still be under `node_modules/` — they
-  are auto-installed **optional peer deps** of `@angular-devkit/build-angular`,
-  not project deps, unused. Dropping them entirely would mean moving the build to
-  `@angular/build`.
+- `@angular-devkit/build-angular` (and its webpack + `karma-source-map-support`
+  deps) was removed 2026-09-02 — build is now `@angular/build`. `node_modules`
+  no longer has karma/webpack. `decisions.md` #13.
+- From-scratch `npm install` needs `--legacy-peer-deps` once (`@angular/build`
+  optional peers); `npm ci` is clean. See memory-bank `techContext`.

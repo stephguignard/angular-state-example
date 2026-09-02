@@ -218,3 +218,31 @@ updated. Component specs still declare their own `provideFormlyCore` in `TestBed
 (unchanged — no global test config). If a second feature ever needs Formly,
 promote the call to a shared `provideFormly…()` helper or back to `app.config.ts`
 and re-measure.
+
+---
+
+## 13. Build on `@angular/build`, not `@angular-devkit/build-angular`
+_Status: accepted (2026-09-02)_
+
+**Context.** The CLI-default `@angular-devkit/build-angular` pulls the whole
+webpack toolchain (`webpack`, `webpack-dev-server`, `@ngtools/webpack`, babel
+loaders, `mini-css-extract-plugin`, …) and `karma-source-map-support` as **hard
+deps**, plus `karma` as an optional peer — none of it used: the project already
+built with the esbuild `:application` builder and tests on Jest. `@angular/build`
+is the same builders (`application` / `dev-server` / `extract-i18n`) without the
+webpack/karma baggage.
+
+**Decision.** Remove `@angular-devkit/build-angular`, add `@angular/build`, point
+the three `angular.json` targets at `@angular/build:*`. Bump `@angular/*`
+`21.2.20 → 21.2.22` and `@angular/cli` / `@angular/compiler-cli` to match so
+`@angular/build`'s peers resolve. `@angular/cli` stays (owns the `ng` CLI and
+schematics; does not depend on `build-angular`).
+
+**Consequences.** `node_modules` loses webpack + `@ngtools` + `build-angular` +
+`build-webpack`; `package-lock.json` ~7k lines smaller. `ng build` / `ng serve`
+behave identically (same esbuild engine, same bundle output). `ng test` still
+absent (would now be `@angular/build:unit-test`, Vitest — not adopted, [[decisions]]
+#10 reasoning still holds). **Install gotcha:** a from-scratch `npm install` needs
+`--legacy-peer-deps` once because npm tries to satisfy `@angular/build`'s optional
+peers (`@angular/localize`, `ng-packagr`); `npm ci` and lockfile-based
+`npm install` are clean. Documented in [[techContext]].

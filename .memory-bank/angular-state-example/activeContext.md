@@ -1,6 +1,6 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (scss + initial-bundle budgets fixed)_
+_Last updated: 2026-09-02 (scss + bundle budgets; build → @angular/build)_
 
 ## Current branch
 
@@ -12,6 +12,9 @@ _Last updated: 2026-09-02 (scss + initial-bundle budgets fixed)_
 3. `perf(dynform)` — move `provideFormlyCore([...])` from `app.config.ts` into
    `dynform.routes.ts` `providers`; `ng build` prod now passes. See [[decisions]] #12.
 4. `docs(memory-bank)` — record #12 + branch rename.
+5. `build(deps)` — swap `@angular-devkit/build-angular` → `@angular/build`
+   (drops webpack/karma tree); `@angular/*` 21.2.20 → 21.2.22. [[decisions]] #13.
+6. `docs(memory-bank)` — record #13.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during the merge — its content was already in the
@@ -20,11 +23,14 @@ validator config).
 
 ## In flight / recently done
 
-**In flight:** `fix/prod-build-budgets` — committed locally, awaiting push/merge
-decision. `ng build` prod now **passes** (both budget errors gone; only the
-500 kB initial `maximumWarning` remains, non-fatal). `npm test` 25/37 green.
-Dev server `/dynform` served HTTP 200 with the route-level Formly providers; not
-visually verified in a browser (no browser tooling this session).
+**In flight:** `fix/prod-build-budgets` — pushed, awaiting merge. `ng build` prod
+**passes** (both budget errors gone; only the 500 kB `maximumWarning` left).
+`ng build` dev + `ng serve` verified on `@angular/build`. `npm test` 25 suites /
+37 tests green. Not visually verified in a browser (no browser tooling this
+session) — `/dynform` served HTTP 200; the `FormOne` spec renders the full form.
+
+⚠️ After pulling this branch, run `npm ci` (not a bare `npm install` from a wiped
+lock — needs `--legacy-peer-deps` once; see [[techContext]]).
 
 Previous session (all committed + pushed on `main`):
 

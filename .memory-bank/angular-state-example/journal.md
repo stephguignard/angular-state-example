@@ -16,6 +16,41 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Migrate build to @angular/build (drop build-angular)
+**Done:**
+- Removed `@angular-devkit/build-angular`, added `@angular/build`; repointed the
+  three `angular.json` targets (`build` / `serve` / `extract-i18n`) at
+  `@angular/build:*`.
+- Bumped `@angular/*` `21.2.20 → 21.2.22`, `@angular/cli` → `21.2.23`,
+  `@angular/compiler-cli` → `21.2.22` so `@angular/build`'s peers resolve.
+- Updated `techContext`, `progress`, added [[decisions]] #13.
+- On branch `fix/prod-build-budgets`.
+
+**Decided:** [[decisions]] #13 — build on `@angular/build`. `@angular/cli` stays
+(owns `ng`, doesn't depend on `build-angular`). Did NOT adopt
+`@angular/build:unit-test` (Vitest) — Jest stays, #10 reasoning holds.
+
+**Observed:**
+- `node_modules` lost webpack (~7.6M), `@ngtools/webpack`,
+  `@angular-devkit/build-{angular,webpack}`, `karma-source-map-support`.
+  `package-lock.json` ~7k lines smaller. `@angular-devkit/` now only
+  architect/core/schematics (for the CLI).
+- `karma` was already NOT installed (`npm ls karma` empty) — it was only an
+  *optional* peer. The real deadweight removed is webpack + babel loaders.
+- **Install friction:** `npm install` / `npm i -D @angular/build` fails ERESOLVE
+  on `@angular/build`'s optional peers (`@angular/localize`, `ng-packagr`).
+  `--legacy-peer-deps` once → settled lock → `npm ci` and plain `npm install`
+  both clean afterwards. Verified with a full `rm -rf node_modules && npm ci`.
+- `ng build` prod / dev, `ng serve` (HTTP 200 on `/` + `/main.js`), `npm test`
+  37/37 — all green. Bundle output byte-identical (same esbuild `application`).
+- npm now flags `@angular/platform-browser-dynamic` as deprecated — still in
+  deps, harmless, could be dropped later.
+
+**Next:** merge `fix/prod-build-budgets`. Optional: drop
+`@angular/platform-browser-dynamic`.
+
+---
+
 ## 2026-09-02 — Fix the initial-bundle budget (move Formly off app.config)
 **Done:**
 - Diagnosed the 1.27 MB initial bundle with `source-map-explorer`: PrimeNG ~513 kB,
