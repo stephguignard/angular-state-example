@@ -4,13 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-This is a playground/reference project (Angular 19, standalone components, no NgModules) whose sole point is to
+This is a playground/reference project (Angular 21, standalone components, no NgModules) whose sole point is to
 compare different Angular **state management** and **form-integration** patterns side by side, one per feature
 folder under `src/app/features/`. When asked to change or extend a feature, keep it consistent with the pattern
 that feature already demonstrates rather than "fixing" it to match another feature — the divergence is intentional.
 
 ## Commands
 
+- Node version is pinned in `.nvmrc` (currently 22.23.2) — run `nvm use` before installing/building.
 - `npm start` / `ng serve` — dev server at `http://localhost:4200/`
 - `ng build` — production build to `dist/`
 - `ng test` — unit tests via Karma/Jasmine (watches by default)
@@ -25,7 +26,8 @@ There is no configured e2e runner, no lint script wired into `package.json`, and
 ### Feature module layout
 
 Each feature under `src/app/features/<name>/` follows the same skeleton and is lazy-loaded from `src/app/app.routes.ts`
-via `loadChildren` pointing at a `<name>.routes.ts`:
+via `loadChildren` pointing at a `<name>.routes.ts` (this includes `features/home`, the landing page, which is
+lazy-loaded the same way but carries no state pattern):
 
 ```
 features/<name>/
@@ -72,9 +74,10 @@ registered there, not per-feature.
 ### PrimeNG theming
 
 `app.config.ts` defines a custom PrimeNG preset (`CustomPreset`) by extending the `Lara` preset with
-`definePreset`, remapping semantic `primary` colors onto the `gray` palette. Tailwind (`tailwindcss` +
-`tailwindcss-primeui`) is also active (`src/tailwind.css`, `.postcssrc.json`) alongside PrimeNG components — both
-styling systems coexist intentionally.
+`definePreset`, remapping semantic `primary` colors onto the `gray` palette. Tailwind v4 is also active — wired
+through the `@tailwindcss/postcss` plugin in `.postcssrc.json` (no `tailwind.config.js`; the CSS-first entrypoint
+`src/tailwind.css` just `@import`s `tailwindcss` + `tailwindcss-primeui` and is pulled in by `src/styles.scss`) —
+alongside PrimeNG components; both styling systems coexist intentionally.
 
 ## Conventions observed in the code
 
@@ -85,7 +88,8 @@ styling systems coexist intentionally.
 - Repository services (`*-repository.service.ts`) are the HTTP/data boundary; state/facade services depend on them,
   components never inject a repository directly.
 - Single quotes, 2-space indentation (enforced by `.editorconfig`); TypeScript `strict` mode plus
-  `strictTemplates`, `strictInjectionParameters`, and `noPropertyAccessFromIndexSignature` are on in `tsconfig.json`
-  — respect these rather than widening types to silence errors.
+  `strictTemplates`, `strictInjectionParameters`, `strictInputAccessModifiers`, and
+  `noPropertyAccessFromIndexSignature` are on in `tsconfig.json` — respect these rather than widening types to
+  silence errors.
 - Some in-code comments and console messages are in French — match existing style within a file rather than
   translating wholesale.
