@@ -16,6 +16,23 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Conventional Commits rules
+**Done:**
+- Added `.claude/rules/conventional-commits.md` (types, repo scopes, breaking-change
+  syntax, attribution footers, examples).
+- Referenced it from `CLAUDE.md` under a new "Commit conventions" section.
+
+**Decided:** [[decisions]] #11 — Conventional Commits by convention, no
+`commitlint` / `husky`. `.claude/rules/` is now a committed location for
+agent-facing rules.
+
+**Observed:** past history mixes `feature:` (invalid) with `feat:` / `chore:`;
+not rewritten.
+
+**Next:** if commit drift returns, add `commitlint` + a `commit-msg` hook.
+
+---
+
 ## 2026-09-02 — Karma/Jasmine → Jest migration
 **Done:**
 - Added `jest` 30, `jest-preset-angular` 17, `jest-environment-jsdom`, `@types/jest`;

@@ -1,6 +1,6 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (Jest migration committed + pushed)_
+_Last updated: 2026-09-02 (Jest migration + commit-convention rules)_
 
 ## Current branch
 
@@ -9,7 +9,8 @@ chain** plus tooling/docs. `main` is still on Angular 19 and is significantly
 behind. Treat `feature/cva` as the working trunk. **Pushed** to
 `origin/feature/cva` (upstream set); not merged to `main`.
 
-Branch is ~16 commits ahead of `main`; HEAD `3bfa245`. Working tree clean.
+Branch is ~17 commits ahead of `main`; HEAD `0bb93d8` pushed. Uncommitted:
+the Conventional Commits rules file + its docs.
 
 ## In flight / recently done
 
@@ -29,6 +30,9 @@ Branch is ~16 commits ahead of `main`; HEAD `3bfa245`. Working tree clean.
   previously-red CLI stub specs fixed; added `todo.store.spec.ts` (13 behavioural
   tests — the SignalStore had none). **25 suites / 37 tests green.**
   See [[decisions]] #10.
+- **Commit conventions** (uncommitted, 2026-09-02): `.claude/rules/conventional-commits.md`
+  + a "Commit conventions" section in `CLAUDE.md`. Conventional Commits 1.0.0, no
+  `commitlint`. See [[decisions]] #11.
 
 ## Open decisions
 

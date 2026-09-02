@@ -101,3 +101,13 @@ alongside PrimeNG components; both styling systems coexist intentionally.
   silence errors.
 - Some in-code comments and console messages are in French — match existing style within a file rather than
   translating wholesale.
+
+## Commit conventions
+
+Commit messages **must** follow Conventional Commits. The full ruleset (allowed
+types, repo scopes, breaking-change syntax, attribution footers, examples) lives
+in [`.claude/rules/conventional-commits.md`](.claude/rules/conventional-commits.md)
+— read it before writing a commit. In short: `<type>(<scope>): <description>`,
+imperative mood, no trailing period; use `feat` (never `feature`), `fix`, `docs`,
+`refactor`, `test`, `build`, `chore`, …; scope is usually a feature folder
+(`todo`, `user`, `invoice`, `dynform`, `cva`, `home`) or `memory-bank` / `deps`.

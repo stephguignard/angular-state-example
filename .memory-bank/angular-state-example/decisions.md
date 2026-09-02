@@ -168,3 +168,24 @@ not a glob. Jasmine globals (`jasmine.createSpyObj`, `spyOn`) are gone; use
 providers (`provideRouter([])`, route-scoped `@Injectable()` services) since
 there's no global test module. `karma` may still be pulled transitively as an
 optional peer of `@angular-devkit/build-angular` — harmless.
+
+---
+
+## 11. Conventional Commits, enforced by convention (no tooling)
+_Status: accepted (2026-09-02)_
+
+**Context.** Commit history was inconsistent (`feature:`, `chore:`, bare
+subjects). The repo deliberately has no lint/hook tooling ([[techContext]] "Not
+present"), so a commitlint + husky setup would be the first such addition.
+
+**Decision.** Adopt Conventional Commits 1.0.0, documented as a rules file at
+`.claude/rules/conventional-commits.md` and referenced from `CLAUDE.md`
+("Commit conventions"). No `commitlint` / `husky` — the rule is followed by
+authors and by Claude Code reading the rules file, not machine-enforced. Use
+`feat` (not `feature`); scope is usually a feature folder or `memory-bank` /
+`deps`.
+
+**Consequences.** `.claude/rules/` is a new committed location for agent-facing
+rules (loaded via the `CLAUDE.md` reference, not auto-discovered). Old commits
+keep their non-conforming messages — history is not rewritten. If drift returns,
+revisit and add `commitlint` (would supersede this entry).
