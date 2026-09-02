@@ -1,38 +1,42 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (scss + bundle budgets; build → @angular/build)_
+_Last updated: 2026-09-02 (fix/prod-build-budgets merged to main)_
 
 ## Current branch
 
-**`fix/prod-build-budgets`** off `main` (`0ef8614`) — pushed to
-`origin/fix/prod-build-budgets`, not merged. `main` == `origin/main`. Commits:
-1. `fix(home)` — drop `@use "tailwindcss"` / `.card-selection` `@apply` from
-   `home-page.component.scss`, utilities moved inline onto the `<p-card>` tags.
-2. `docs(memory-bank)` — record that fix.
-3. `perf(dynform)` — move `provideFormlyCore([...])` from `app.config.ts` into
-   `dynform.routes.ts` `providers`; `ng build` prod now passes. See [[decisions]] #12.
-4. `docs(memory-bank)` — record #12 + branch rename.
-5. `build(deps)` — swap `@angular-devkit/build-angular` → `@angular/build`
-   (drops webpack/karma tree); `@angular/*` 21.2.20 → 21.2.22. [[decisions]] #13.
-6. `docs(memory-bank)` — record #13.
+**`main`** — HEAD `7befc84`, == `origin/main`. Working tree clean, nothing in
+flight. `fix/prod-build-budgets` was fast-forwarded into `main` and pushed; the
+branch still exists (local + `origin`) — safe to delete. New work → new branch
+off `main`.
+
+`fix/prod-build-budgets` delivered (all on `main` now):
+1. `f95efa3` `fix(home)` — `home-page.component.scss` stops inlining Tailwind
+   (`@use` + `.card-selection` `@apply` removed, utilities moved to the template).
+2. `2a0681e` `perf(dynform)` — `provideFormlyCore([...])` moved from
+   `app.config.ts` to `dynform.routes.ts` `providers`. Initial bundle 1.27 MB →
+   672 kB. [[decisions]] #12.
+3. `8b988dc` `build(deps)` — `@angular-devkit/build-angular` → `@angular/build`
+   (drops the webpack/karma tree); `@angular/*` 21.2.20 → 21.2.22. [[decisions]] #13.
+   (+ `docs(memory-bank)` commits `fefe50b` / `10db9cc` / `e23564f` / `7befc84`.)
+
+`ng build` prod now **passes** (only the 500 kB initial `maximumWarning` left).
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
-never pushed) was discarded during the merge — its content was already in the
-merged history (verified: the `[dt]` inputNumber binding + `updateOn: 'blur'`
+never pushed) was discarded during an earlier merge — its content was already in
+the merged history (verified: the `[dt]` inputNumber binding + `updateOn: 'blur'`
 validator config).
 
 ## In flight / recently done
 
-**In flight:** `fix/prod-build-budgets` — pushed, awaiting merge. `ng build` prod
-**passes** (both budget errors gone; only the 500 kB `maximumWarning` left).
-`ng build` dev + `ng serve` verified on `@angular/build`. `npm test` 25 suites /
-37 tests green. Not visually verified in a browser (no browser tooling this
-session) — `/dynform` served HTTP 200; the `FormOne` spec renders the full form.
+Nothing in flight.
 
-⚠️ After pulling this branch, run `npm ci` (not a bare `npm install` from a wiped
-lock — needs `--legacy-peer-deps` once; see [[techContext]]).
+⚠️ On a fresh clone use `npm ci` (a bare `npm install` from a wiped lock needs
+`--legacy-peer-deps` once — `@angular/build` optional peers; see [[techContext]]).
 
-Previous session (all committed + pushed on `main`):
+This session (all on `main`): scss budget fix, Formly → route (bundle 1.27 MB →
+672 kB), build tooling `@angular-devkit/build-angular` → `@angular/build`.
+
+Earlier this day / pre-session (for context):
 
 - **Jest migration** (`3bfa245`): Karma/Jasmine → Jest (`jest-preset-angular` 17).
   `jest.config.js` + `setup-jest.ts`; rewrote `tsconfig.spec.json`; dropped the

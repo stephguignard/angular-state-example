@@ -16,6 +16,23 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Merge fix/prod-build-budgets → main
+**Done:**
+- Fast-forward-merged `fix/prod-build-budgets` into `main` (`0ef8614..7befc84`),
+  pushed `origin/main`. Set `main` upstream to `origin/main` (was unset).
+- Reconciled `activeContext` / `progress` to the merged, single-branch state.
+- Re-verified on `main`: `ng build` prod complete, `npm test` 25/37 green.
+
+**Decided:** ff merge (branch history linear, `origin/main` a clean ancestor).
+
+**Observed:** `fix/prod-build-budgets` still exists local + `origin` — not deleted
+(no request); safe to delete since it's == `main`.
+
+**Next:** delete the merged branch if wanted. Optional follow-ups unchanged
+(drop `@angular/platform-browser-dynamic`; deeper specs; Serena `angular` LSP).
+
+---
+
 ## 2026-09-02 — Migrate build to @angular/build (drop build-angular)
 **Done:**
 - Removed `@angular-devkit/build-angular`, added `@angular/build`; repointed the

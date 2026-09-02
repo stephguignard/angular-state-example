@@ -10,7 +10,7 @@ _Last updated: 2026-09-02 (scss + bundle budgets fixed; build → @angular/build
   peers. Verified 2026-09-02: prod build, dev build, `ng serve` (200 on `/` and
   `/main.js`), `npm test` 37/37 — all green.
 - `ng build` (production, = default config): **PASSES** as of 2026-09-02
-  (branch `fix/prod-build-budgets`). Only non-fatal warnings remain:
+  (all on `main`, `7befc84`). Only non-fatal warnings remain:
   - ~~`✘ initial bundle 1.27 MB` > 1 MB error budget~~ **FIXED** — moved
     `provideFormlyCore([...withFormlyPrimeNG(), {...}])` out of `app.config.ts`
     into the `dynform` route's `providers` ([[decisions]] #12). Initial bundle
