@@ -35,3 +35,5 @@ another feature.
 - [[techContext]] — stack, versions, commands
 - [[activeContext]] — what's in flight now
 - [[progress]] — per-feature status
+- [[journal]] — dated work log
+- [[decisions]] — decision log (why things are the way they are)

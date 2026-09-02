@@ -42,4 +42,4 @@ Recent commits on the branch:
 
 ## Related
 
-- [[progress]] · [[systemPatterns]] · [[techContext]]
+- [[progress]] · [[systemPatterns]] · [[techContext]] · [[journal]] · [[decisions]]
