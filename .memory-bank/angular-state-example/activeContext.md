@@ -19,18 +19,17 @@ Recent commits on the branch:
 - **Docs refresh** (committed): `CLAUDE.md` + `README.md` updated for the
   Angular 21 stack — version bumps, `.nvmrc` note, `features/home` mention,
   Tailwind v4 wiring, `strictInputAccessModifiers`.
-- **Agent tooling setup** (uncommitted): added `.mcp.json` with `memory-bank`
+- **Agent tooling setup**: added `.mcp.json` with `memory-bank`
   (`@allpepper/memory-bank-mcp`) and `serena` (`serena-agent` via `uvx`);
   installed `uv` to `~/.local/bin`; Serena auto-generated `.serena/`
   (`project.yml`, self-ignored `project.local.yml` + `cache/`).
-- **This memory bank** — created under `.memory-bank/angular-state-example/`.
+  `.mcp.json` is **git-ignored** (`.gitignore` → `/.mcp.json`) because it holds
+  machine-specific absolute paths.
+- **This memory bank** + `.serena/project.yml` committed (`ac4c2f5`).
 
 ## Open decisions
 
-1. Git handling of the new files: `.mcp.json`, `.serena/project.yml`,
-   `.memory-bank/` — commit, `.gitignore`, or leave untracked. `.mcp.json`
-   contains machine-specific absolute paths (repo path, nvm version).
-2. Serena LSP backend: keep `typescript` (works out of the box) vs switch
+1. Serena LSP backend: keep `typescript` (works out of the box) vs switch
    `.serena/project.yml` to `angular` (better for templates, needs
    `@angular/language-server` which isn't installed).
 
