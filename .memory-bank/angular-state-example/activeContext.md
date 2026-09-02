@@ -1,6 +1,6 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02_
+_Last updated: 2026-09-02 (Jest migration)_
 
 ## Current branch
 
@@ -8,12 +8,10 @@ _Last updated: 2026-09-02_
 chain** plus tooling/docs. `main` is still on Angular 19 and is significantly
 behind. Treat `feature/cva` as the working trunk. Not yet merged/pushed.
 
-Branch is ~14 commits ahead of `main`; the 6 most recent are this session's
-tooling + docs work (`6d6a732` … `73d8765`).
+Branch is ~15 commits ahead of `main`. Working-tree change in flight: the
+**Karma → Jest** migration (not yet committed).
 
 ## In flight / recently done
-
-All committed on `feature/cva`, nothing uncommitted:
 
 - **Docs refresh** (`6d6a732`): `CLAUDE.md` + `README.md` for the Angular 21 stack.
 - **Agent tooling** (`ac4c2f5`): `.mcp.json` (git-ignored) with `memory-bank`
@@ -24,6 +22,11 @@ All committed on `feature/cva`, nothing uncommitted:
   `decisions.md`; `CLAUDE.md` points at the workflow (`85a0124`).
 - **Session commands** (`73d8765`): `.claude/commands/hello.md` (load memory +
   status recap) and `.claude/commands/bye.md` (this housekeeping routine).
+- **Jest migration** (uncommitted, 2026-09-02): Karma/Jasmine → Jest
+  (`jest-preset-angular` 17). New `jest.config.js` + `setup-jest.ts`; rewrote
+  `tsconfig.spec.json`; dropped the `test` target from `angular.json`; removed
+  `karma*` / `jasmine*` / `@types/jasmine` devDeps; `npm test` → `jest`. All 12
+  previously-red CLI stub specs fixed. **24/24 green.** See [[decisions]] #10.
 
 ## Open decisions
 
@@ -38,8 +41,8 @@ All committed on `feature/cva`, nothing uncommitted:
   Until a restart, `/hello` and `/bye` run on the files only (no Serena memory).
 - The pinned nvm path `~/.nvm/versions/node/v22.23.2/bin/npx` in `.mcp.json`
   breaks if that Node version is removed.
-- Running `ng test` / `ng build` here needs Node 22.23.2 on PATH and
-  `CHROME_BIN` → a `--no-sandbox` Chromium wrapper (see [[progress]]).
+- `ng build` here needs Node 22.23.2 on PATH. Tests (`npm test` / `jest`) run on
+  any Node, no browser / `CHROME_BIN` needed since the Jest migration.
 - When editing a feature, keep its pattern — see [[systemPatterns]]. The `user`
   feature has two search services that usually both need the change.
 

@@ -1,6 +1,6 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02_
+_Last updated: 2026-09-02 (Jest migration)_
 
 ## Build / test status
 
@@ -17,25 +17,26 @@ _Last updated: 2026-09-02_
   - Fixes if desired: drop the `@use "tailwindcss"` line in
     `home-page.component.scss`; bump the `initial` budget in `angular.json`
     (or accept it — it's a demo). Not done (not requested).
-- `ng test` (run 2026-09-02, Node 22.23.2, headless Chromium): **TOTAL 12 SUCCESS,
-  12 FAILED — 24 specs.**
-  - The 12 failures are all **pre-existing CLI-scaffold stubs** that never provided
-    the deps the unit needs — NG0201 "No provider found for …":
-    `ActivatedRoute` (HomePage, UserDetailPage, UserSearchListPage, UserSearch,
-    UserTable, FormOne), route-scoped state services (`InvoiceStateService`,
-    `InvoiceFacadeService`, `UserDetailStateService`, `UserSearchStateService`,
-    `UserSearchRxResourceStateService` — all `@Injectable()` without
-    `providedIn: 'root'`, provided at route/component level in real use),
-    `InvoicePageComponent`.
-  - Not regressions from the Angular 21 upgrade or the tooling work — the default
-    `TestBed.configureTestingModule({})` stubs were simply never fleshed out.
-  - The 12 passing: `TodoStore`, `TodoService`, `TodoComponent`,
-    `TodoDetailPage`, `TodoSearchListPage`, `AmountCvaComponent`, `CvaPage`,
-    `PanelFieldWrapper`, `RepeatTableType`, `UserRepositoryService`,
-    `InvoiceRepositoryService` / `InvoiceMockRepositoryService`, `AppComponent`.
-- Running Karma here needs `CHROME_BIN` pointing at a `--no-sandbox` Chromium
-  wrapper and the pinned Node (22.23.2); the system shell defaults to Node 22.14.0
-  which trips an `ERR_ASSERTION` in the karma builder with `--include`.
+- `npm test` (= `jest`, run 2026-09-02, Node 22.23.2): **25 suites / 37 tests,
+  all green.** Test stack migrated Karma/Jasmine → **Jest** (`jest-preset-angular`
+  17, jsdom, zone setup via `setup-jest.ts`). See [[decisions]] #10.
+  - Added `todo/store/todo.store.spec.ts` — the SignalStore had no spec. 13 tests:
+    initial state, computed (`todosCount` / `sortedTodos` / `hasError`),
+    `updateQuery` / `updateOrder`, `loadByQuery` (fakeAsync + `tick(300)` for the
+    debounce, `distinctUntilChanged`), `addTodo` / `removeTodo` / `toggleTodo`
+    (incl. error branches), with `TodoService` mocked via `jest.fn()`.
+  - Every other feature already had at least a "should create" spec per unit;
+    `FormlyFieldWithLogic.ts` is a pure type (no runtime → no spec).
+  - The previously-red 12 CLI-scaffold stubs were fixed in the same pass by
+    giving each `TestBed` what the unit needs: `provideRouter([])` for
+    `ActivatedRoute` (HomePage, UserDetailPage, UserSearchListPage, InvoicePage),
+    the route-scoped `@Injectable()` state services as explicit `providers`
+    (`InvoiceStateService`, `InvoiceFacadeService`, `UserDetailStateService`,
+    `UserSearchStateService`, `UserSearchRxResourceStateService`), the full
+    Formly config for `FormOne`, and a stub `ActivatedRoute` with `id: '1'` for
+    `UserDetailPage` (its template needs a loaded user to build `userForm`).
+  - Jest runs on any Node with no browser / `CHROME_BIN` — the old Karma Chromium
+    setup is gone. Node 22.23.2 still preferred (`.nvmrc`), but not required for tests.
 
 ## Feature status
 
@@ -52,9 +53,12 @@ _Last updated: 2026-09-02_
 ## Known issues / rough edges
 
 - `main` branch is stale (Angular 19). All real work is on `feature/cva`.
-- Half the unit specs are red (see above) — untouched CLI stubs missing providers.
-  Fixing them = adding `provideRouter([])` / providing the route-scoped services
-  in each `TestBed`. Low value for a reference repo; left as-is intentionally.
+- Most unit specs are still only "should create" smoke tests (green). `todo.store`
+  now has real behavioural coverage; the other patterns (user search services,
+  invoice facade, cva) would benefit from the same treatment.
+- `karma` / `karma-source-map-support` may still appear under `node_modules/` —
+  they are auto-installed *optional peer deps* of `@angular-devkit/build-angular`,
+  not project deps, and are unused.
 - `user-search-rx-resource-state.service.ts` has a `clearError()` stub that does
   nothing (resource owns the error) — intentional, left as a comparison note.
 - `todo.store.ts` `addTodo` uses `Date.now()` as id and pushes optimistically.

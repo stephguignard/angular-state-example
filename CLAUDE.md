@@ -22,9 +22,9 @@ work session; at the end, update `activeContext.md` / `progress.md` (rewritten) 
 - Node version is pinned in `.nvmrc` (currently 22.23.2) — run `nvm use` before installing/building.
 - `npm start` / `ng serve` — dev server at `http://localhost:4200/`
 - `ng build` — production build to `dist/`
-- `ng test` — unit tests via Karma/Jasmine (watches by default)
-- `ng test --no-watch --browsers=ChromeHeadless` — single run, useful for CI/agent verification
-- `ng test --include='**/todo.store.spec.ts'` — run a single spec file (adjust the glob to target one file)
+- `npm test` / `npx jest` — unit tests via **Jest** (`jest-preset-angular`, jsdom); single run by default
+- `npm run test:watch` — Jest in watch mode
+- `npx jest todo.service` — run specs matching a path fragment (Jest takes a filename regex, not a glob)
 - `ng generate component features/<feature>/... ` — scaffolding follows Angular CLI schematics (style: scss, per `angular.json`)
 
 There is no configured e2e runner, no lint script wired into `package.json`, and no Prettier/ESLint config present — don't assume `npm run lint` exists.

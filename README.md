@@ -38,10 +38,12 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Unit tests run on [Jest](https://jestjs.io) (via
+[`jest-preset-angular`](https://thymikee.github.io/jest-preset-angular/), jsdom environment):
 
 ```bash
-ng test
+npm test          # single run
+npm run test:watch
 ```
 
 ## Running end-to-end tests

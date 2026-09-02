@@ -11,7 +11,7 @@
 | Forms | `@ngx-formly/core` + `@ngx-formly/primeng` 7, `json-logic-js` 2 |
 | Rx | `rxjs` ~7.8 |
 | Build | `@angular-devkit/build-angular:application` builder, `browser: src/main.ts`, out `dist/angular-state-example` |
-| Test | Karma + Jasmine (`:karma` builder). No e2e runner. |
+| Test | **Jest** 30 + `jest-preset-angular` 17 (jsdom, `setup-jest.ts`). Config: `jest.config.js`, `tsconfig.spec.json` (`types: [jest, node]`). No `test` target in `angular.json`. No e2e runner. |
 | TS | `typescript` ~5.9, `strict` + `strictTemplates` + `strictInjectionParameters` + `strictInputAccessModifiers` + `noPropertyAccessFromIndexSignature` |
 | Node | pinned in `.nvmrc` → **22.23.2** (nvm default alias also 22.23.2) |
 
@@ -19,9 +19,9 @@
 
 - `npm start` / `ng serve` → http://localhost:4200/
 - `ng build` → `dist/`
-- `ng test` → Karma/Jasmine, watches by default
-- `ng test --no-watch --browsers=ChromeHeadless` → single CI/agent run
-- `ng test --include='**/todo.store.spec.ts'` → single spec (adjust glob)
+- `npm test` / `npx jest` → Jest, single run by default
+- `npm run test:watch` → Jest watch mode
+- `npx jest todo.service` → run specs matching a path fragment (regex, not glob)
 - `ng generate component features/<feature>/...` → CLI schematics, style: scss
 
 ## Not present (don't assume)

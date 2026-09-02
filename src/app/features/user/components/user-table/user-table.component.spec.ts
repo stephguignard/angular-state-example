@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserTableComponent } from './user-table.component';
+import { UserSearchStateService } from '../../services/user-search-state.service';
 
 describe('UserTableComponent', () => {
   let component: UserTableComponent;
@@ -8,7 +9,8 @@ describe('UserTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserTableComponent]
+      imports: [UserTableComponent],
+      providers: [UserSearchStateService]
     })
     .compileComponents();
 

@@ -16,6 +16,45 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Karma/Jasmine → Jest migration
+**Done:**
+- Added `jest` 30, `jest-preset-angular` 17, `jest-environment-jsdom`, `@types/jest`;
+  removed `karma*`, `jasmine-core`, `@types/jasmine`.
+- New `jest.config.js` (spreads `createCjsPreset()`, `setupFilesAfterEnv:
+  setup-jest.ts`); `setup-jest.ts` calls `setupZoneTestEnv()` from
+  `jest-preset-angular/setup-env/zone`.
+- Rewrote `tsconfig.spec.json`: `module: CommonJS`, `moduleResolution: node`,
+  `types: [jest, node]`, includes `setup-jest.ts`.
+- `angular.json`: deleted the `test` (`:karma`) architect target.
+- `package.json` scripts: `test` → `jest`, added `test:watch`.
+- Fixed all 12 previously-red CLI stub specs (providers / router / Formly config /
+  a stubbed `ActivatedRoute` id for `UserDetailPage`).
+- Coverage check: only `todo.store.ts` (the SignalStore) lacked a spec — added
+  `todo.store.spec.ts` (13 behavioural tests, `TodoService` mocked, fakeAsync for
+  the `debounceTime(300)` in `loadByQuery`). **`npm test` → 25 suites / 37 tests green.**
+- `ng build --configuration development` still clean.
+- Updated `CLAUDE.md`, `README.md`, `techContext`, `progress`, `activeContext`.
+
+**Decided:** [[decisions]] #10 — Jest via `jest-preset-angular`, not the
+experimental `@angular/build:unit-test` runner.
+
+**Observed:**
+- `jest-preset-angular` 17 needs an explicit `setupZoneTestEnv()` call — a bare
+  `import '.../setup-env/zone'` no longer self-initialises (was "Need to call
+  TestBed.initTestEnvironment() first").
+- `provideRouter([])` is enough to make `ActivatedRoute` injectable in TestBed.
+- `UserDetailPageComponent` template can't render without a loaded user
+  (`[formGroup]="userForm"`, built in an `effect()`), so its spec feeds
+  `ActivatedRoute` a real `id`.
+- `karma` / `karma-source-map-support` linger in `node_modules/` as optional peer
+  deps of `@angular-devkit/build-angular` — unused, not project deps.
+
+**Next:** specs are still only "should create" smoke tests; behavioural tests
+per pattern would be the real next step. Consider moving the build off
+`@angular-devkit/build-angular` to `@angular/build` to drop the karma peer.
+
+---
+
 ## 2026-09-02 — Angular 21 upgrade docs + agent tooling + journaling setup
 **Done:**
 - `CLAUDE.md` + `README.md` refreshed for the Angular 21 stack (versions, `.nvmrc`,

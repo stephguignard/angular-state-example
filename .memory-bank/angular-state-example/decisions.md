@@ -143,3 +143,28 @@ committing.
 files-only when the `serena` / `memory-bank` MCP servers aren't connected.
 `.claude/settings.local.json` (which enables those servers) is git-ignored
 globally, so each machine approves them once.
+
+---
+
+## 10. Unit tests run on Jest (`jest-preset-angular`), not Karma
+_Status: accepted (2026-09-02) — supersedes the Karma/Jasmine setup_
+
+**Context.** The repo shipped the CLI-default Karma + Jasmine runner, which needs
+a real (or headless) browser and a `CHROME_BIN` wrapper to run in this
+environment. Angular 21 also ships an experimental `@angular/build:unit-test`
+builder (primarily Vitest; Jest runner support is new/limited).
+
+**Decision.** Migrate to **Jest 30 + `jest-preset-angular` 17** (jsdom, zone
+setup via `setup-jest.ts` → `setupZoneTestEnv()`). Config in `jest.config.js`
+(spreads `createCjsPreset()`); `tsconfig.spec.json` switched to
+`module: CommonJS` / `types: [jest, node]`. The `test` target is removed from
+`angular.json`; `npm test` runs `jest` directly. Karma/Jasmine packages
+uninstalled. Not the `@angular/build:unit-test` builder — too new to rely on.
+
+**Consequences.** Tests run headless on any Node, no browser. `ng test` no
+longer works — use `npm test` / `npx jest`. Spec matching is a filename regex,
+not a glob. Jasmine globals (`jasmine.createSpyObj`, `spyOn`) are gone; use
+`jest.fn()` / `jest.spyOn()` in new specs. Component specs must supply their own
+providers (`provideRouter([])`, route-scoped `@Injectable()` services) since
+there's no global test module. `karma` may still be pulled transitively as an
+optional peer of `@angular-devkit/build-angular` — harmless.
