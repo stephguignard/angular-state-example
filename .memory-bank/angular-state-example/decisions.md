@@ -124,3 +124,22 @@ each work session (see [[journal]]); `activeContext` / `progress` are rewritten,
 
 **Consequences.** Memory bank drift is a review concern like stale docs. Keep it
 consistent with `CLAUDE.md`.
+
+---
+
+## 9. Session lifecycle via `/hello` and `/bye` slash commands
+_Status: accepted (2026-09-02)_
+
+**Context.** The memory bank only helps if it's actually read at the start and
+updated at the end of each work session. That needs a repeatable routine.
+
+**Decision.** Two project slash commands in `.claude/commands/`:
+`/hello` loads the memory bank + Serena memory and prints a short status recap
+(read-only); `/bye` rewrites `activeContext` / `progress`, appends a `journal`
+entry, records decisions here, and updates Serena memories, then asks before
+committing.
+
+**Consequences.** The routine is versioned and shared. `/bye` degrades to
+files-only when the `serena` / `memory-bank` MCP servers aren't connected.
+`.claude/settings.local.json` (which enables those servers) is git-ignored
+globally, so each machine approves them once.
