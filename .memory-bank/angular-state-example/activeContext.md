@@ -1,15 +1,15 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (Jest migration)_
+_Last updated: 2026-09-02 (Jest migration committed + pushed)_
 
 ## Current branch
 
 `feature/cva` — despite the name, it carries the whole **Angular 19 → 21 upgrade
 chain** plus tooling/docs. `main` is still on Angular 19 and is significantly
-behind. Treat `feature/cva` as the working trunk. Not yet merged/pushed.
+behind. Treat `feature/cva` as the working trunk. **Pushed** to
+`origin/feature/cva` (upstream set); not merged to `main`.
 
-Branch is ~15 commits ahead of `main`. Working-tree change in flight: the
-**Karma → Jest** migration (not yet committed).
+Branch is ~16 commits ahead of `main`; HEAD `3bfa245`. Working tree clean.
 
 ## In flight / recently done
 
@@ -22,11 +22,13 @@ Branch is ~15 commits ahead of `main`. Working-tree change in flight: the
   `decisions.md`; `CLAUDE.md` points at the workflow (`85a0124`).
 - **Session commands** (`73d8765`): `.claude/commands/hello.md` (load memory +
   status recap) and `.claude/commands/bye.md` (this housekeeping routine).
-- **Jest migration** (uncommitted, 2026-09-02): Karma/Jasmine → Jest
+- **Jest migration** (`3bfa245`, 2026-09-02): Karma/Jasmine → Jest
   (`jest-preset-angular` 17). New `jest.config.js` + `setup-jest.ts`; rewrote
   `tsconfig.spec.json`; dropped the `test` target from `angular.json`; removed
   `karma*` / `jasmine*` / `@types/jasmine` devDeps; `npm test` → `jest`. All 12
-  previously-red CLI stub specs fixed. **24/24 green.** See [[decisions]] #10.
+  previously-red CLI stub specs fixed; added `todo.store.spec.ts` (13 behavioural
+  tests — the SignalStore had none). **25 suites / 37 tests green.**
+  See [[decisions]] #10.
 
 ## Open decisions
 
@@ -36,9 +38,10 @@ Branch is ~15 commits ahead of `main`. Working-tree change in flight: the
 
 ## Watch out
 
-- MCP servers `serena` / `memory-bank` were added to `.mcp.json` mid-session and
-  need a Claude Code restart to load. Approved in `.claude/settings.local.json`.
-  Until a restart, `/hello` and `/bye` run on the files only (no Serena memory).
+- MCP servers `serena` / `memory-bank` are connected (confirmed this session).
+  Serena memories live alongside the memory-bank — `testing-setup` holds the Jest
+  gotchas. Approved in `.claude/settings.local.json` (git-ignored, re-approve per
+  machine).
 - The pinned nvm path `~/.nvm/versions/node/v22.23.2/bin/npx` in `.mcp.json`
   breaks if that Node version is removed.
 - `ng build` here needs Node 22.23.2 on PATH. Tests (`npm test` / `jest`) run on

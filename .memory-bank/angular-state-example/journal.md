@@ -33,7 +33,10 @@ Entry template:
   `todo.store.spec.ts` (13 behavioural tests, `TodoService` mocked, fakeAsync for
   the `debounceTime(300)` in `loadByQuery`). **`npm test` → 25 suites / 37 tests green.**
 - `ng build --configuration development` still clean.
-- Updated `CLAUDE.md`, `README.md`, `techContext`, `progress`, `activeContext`.
+- Updated `CLAUDE.md`, `README.md`, `techContext`, `progress`, `activeContext`;
+  wrote Serena memory `testing-setup`.
+- Committed as `3bfa245` and pushed to `origin/feature/cva` (upstream set —
+  the branch had no tracking ref before).
 
 **Decided:** [[decisions]] #10 — Jest via `jest-preset-angular`, not the
 experimental `@angular/build:unit-test` runner.
