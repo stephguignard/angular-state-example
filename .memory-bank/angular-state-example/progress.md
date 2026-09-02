@@ -1,6 +1,6 @@
 # Progress — angular-state-example
 
-_Last updated: 2026-09-02 (Jest migration)_
+_Last updated: 2026-09-02 (feature/cva merged into main)_
 
 ## Build / test status
 
@@ -37,6 +37,9 @@ _Last updated: 2026-09-02 (Jest migration)_
     `UserDetailPage` (its template needs a loaded user to build `userForm`).
   - Jest runs on any Node with no browser / `CHROME_BIN` — the old Karma Chromium
     setup is gone. Node 22.23.2 still preferred (`.nvmrc`), but not required for tests.
+- **Branch state:** `feature/cva` fast-forward-merged into `main` (`eb0a172..b5f55e7`,
+  2026-09-02); `main` == `feature/cva` == `origin/*`. `main` is on Angular 21 with
+  everything. See [[activeContext]] for the discarded stale local `main` commit.
 
 ## Feature status
 
@@ -52,7 +55,6 @@ _Last updated: 2026-09-02 (Jest migration)_
 
 ## Known issues / rough edges
 
-- `main` branch is stale (Angular 19). All real work is on `feature/cva`.
 - Most unit specs are still only "should create" smoke tests (green). `todo.store`
   now has real behavioural coverage; the other patterns (user search services,
   invoice facade, cva) would benefit from the same treatment.

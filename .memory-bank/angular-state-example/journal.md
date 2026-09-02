@@ -16,6 +16,30 @@ Entry template:
 
 ---
 
+## 2026-09-02 — Merge feature/cva → main
+**Done:**
+- Fast-forward-merged `feature/cva` into `main` (`eb0a172..b5f55e7`) and pushed
+  `origin/main`. `main` now == `feature/cva` — Angular 21, Jest, memory bank,
+  commit rules, everything.
+- Updated `activeContext` / `progress` (they claimed "main is stale on Angular 19").
+
+**Decided:** merge as a fast-forward, not `--no-ff` — `feature/cva` history is
+linear and `origin/main` (`eb0a172`) was a clean ancestor.
+
+**Observed:**
+- Local `main` had a stale, never-pushed commit `86bd497 "feature: test cva"`
+  (plus `dadcefa`) that diverged from the line which became `feature/cva` — the
+  branch had been rewritten at some point. Discarded it: verified its content
+  (the `[dt]` inputNumber binding, `updateOn: 'blur'` validators, `amount2`
+  without `required`) is already in `feature/cva` HEAD, so nothing lost.
+- `git merge --ff-only` refused ("diverging branches"); used `git reset --hard
+  feature/cva` on `main` instead, then pushed (remote push stayed a fast-forward).
+
+**Next:** decide whether to keep or delete `feature/cva` (its name no longer
+means anything now that it's == `main`). New work → fresh branch off `main`.
+
+---
+
 ## 2026-09-02 — Conventional Commits rules
 **Done:**
 - Added `.claude/rules/conventional-commits.md` (types, repo scopes, breaking-change

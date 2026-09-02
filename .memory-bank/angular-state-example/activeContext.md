@@ -1,16 +1,19 @@
 # Active Context — angular-state-example
 
-_Last updated: 2026-09-02 (Jest migration + commit-convention rules)_
+_Last updated: 2026-09-02 (feature/cva merged into main)_
 
 ## Current branch
 
-`feature/cva` — despite the name, it carries the whole **Angular 19 → 21 upgrade
-chain** plus tooling/docs. `main` is still on Angular 19 and is significantly
-behind. Treat `feature/cva` as the working trunk. **Pushed** to
-`origin/feature/cva` (upstream set); not merged to `main`.
+**`main` and `feature/cva` are now the same commit** (`b5f55e7`), both pushed.
+`feature/cva` was fast-forward-merged into `main` (`eb0a172..b5f55e7`) — `main`
+now carries the full Angular 19 → 21 upgrade chain, the Jest migration, the
+memory bank and the commit rules. Working tree clean, nothing in flight.
 
-Branch is ~17 commits ahead of `main`; HEAD `0bb93d8` pushed. Uncommitted:
-the Conventional Commits rules file + its docs.
+History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
+never pushed) was discarded during the merge — its content was already present
+in `feature/cva` HEAD (verified: the `[dt]` inputNumber binding + `updateOn:
+'blur'` validator config). `feature/cva` can be kept as the working branch or
+deleted; new work → new branch off `main`.
 
 ## In flight / recently done
 
@@ -30,9 +33,11 @@ the Conventional Commits rules file + its docs.
   previously-red CLI stub specs fixed; added `todo.store.spec.ts` (13 behavioural
   tests — the SignalStore had none). **25 suites / 37 tests green.**
   See [[decisions]] #10.
-- **Commit conventions** (uncommitted, 2026-09-02): `.claude/rules/conventional-commits.md`
+- **Commit conventions** (`b5f55e7`, 2026-09-02): `.claude/rules/conventional-commits.md`
   + a "Commit conventions" section in `CLAUDE.md`. Conventional Commits 1.0.0, no
   `commitlint`. See [[decisions]] #11.
+- **Merge to `main`** (2026-09-02): `feature/cva` fast-forwarded into `main` and
+  pushed; the two branches are level.
 
 ## Open decisions
 
