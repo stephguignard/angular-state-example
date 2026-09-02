@@ -4,14 +4,14 @@ _Last updated: 2026-09-02 (scss + initial-bundle budgets fixed)_
 
 ## Current branch
 
-**`fix/home-scss-budget`** off `main` (`0ef8614`) — not pushed / not merged.
-`main` == `origin/main`. Commits on the branch:
+**`fix/prod-build-budgets`** off `main` (`0ef8614`) — pushed to
+`origin/fix/prod-build-budgets`, not merged. `main` == `origin/main`. Commits:
 1. `fix(home)` — drop `@use "tailwindcss"` / `.card-selection` `@apply` from
    `home-page.component.scss`, utilities moved inline onto the `<p-card>` tags.
 2. `docs(memory-bank)` — record that fix.
-3. (pending commit) `refactor` — move `provideFormlyCore([...])` from
-   `app.config.ts` into `dynform.routes.ts` `providers`; `ng build` prod now
-   passes. See [[decisions]] #12. Branch name is now narrower than its content.
+3. `perf(dynform)` — move `provideFormlyCore([...])` from `app.config.ts` into
+   `dynform.routes.ts` `providers`; `ng build` prod now passes. See [[decisions]] #12.
+4. `docs(memory-bank)` — record #12 + branch rename.
 
 History note: a stale local-only `main` commit (`86bd497 "feature: test cva"`,
 never pushed) was discarded during the merge — its content was already in the
@@ -20,7 +20,7 @@ validator config).
 
 ## In flight / recently done
 
-**In flight:** `fix/home-scss-budget` — committed locally, awaiting push/merge
+**In flight:** `fix/prod-build-budgets` — committed locally, awaiting push/merge
 decision. `ng build` prod now **passes** (both budget errors gone; only the
 500 kB initial `maximumWarning` remains, non-fatal). `npm test` 25/37 green.
 Dev server `/dynform` served HTTP 200 with the route-level Formly providers; not
